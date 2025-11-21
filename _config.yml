@@ -1,0 +1,29 @@
+# _config.yml
+# Información básica del libro
+title: Seminario de Programación
+author: Maestría en Inteligencia de Negocios
+copyright: "2025"
+
+# CONFIGURACIÓN DEL LOGO
+# La ruta es relativa a la raíz del libro.
+# Si tu carpeta se llama 'images' y el archivo 'logo-uec.png':
+logo: images/logo-uec.png
+
+# Opciones de ejecución
+# 'off' significa que solo construirá el HTML sin intentar ejecutar el código
+# (útil si aún no tienes todos los kernels de Python instalados).
+# Cambia a 'auto' o 'force' cuando quieras que se ejecuten los notebooks.
+execute:
+  execute_notebooks: off
+
+# Opciones visuales adicionales
+html:
+  home_page_in_navbar: true
+  use_repository_button: false
+  use_edit_page_button: false
+  use_issues_button: false
+  # Puedes añadir enlaces extra en el pie de página
+  extra_footer: |
+    <div>
+      <p>Universidad Externado de Colombia</p>
+    </div>

@@ -1,0 +1,12 @@
+# Archivos de compilación del libro
+_build/
+
+# Archivos de sistema y temporales
+.DS_Store
+.ipynb_checkpoints
+__pycache__/
+*.pyc
+
+# Entorno virtual (si usas Poetry configurado en local)
+.venv/
+poetry.lock

@@ -1,0 +1,703 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2.5 Diseño de Pipelines Escalables con SOLID &#8212; Seminario de Programación</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'contenidos/sesion2/05_principios_solid';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.6 Proyecto Integrador - SmartPortfolio 🚀" href="06_taller_practico.html" />
+    <link rel="prev" title="2.4 Python Moderno - Tipado Estricto y Configuraciones Robustas" href="04_refactorizacion_hinting.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo-uec.png" class="logo__image only-light" alt="Seminario de Programación - Home"/>
+    <script>document.write(`<img src="../../_static/logo-uec.png" class="logo__image only-dark" alt="Seminario de Programación - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Seminario de Programación: Backend para Ciencia de Datos
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sesión 1 - Ingeniería de Software para Datos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/01_gestion_dependencias.html">1.1 Del Caos al Orden: Gestión de Dependencias con Poetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/02_estructura_proyecto.html">1.2 Anatomía de un Proyecto de Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/03_git_workflow.html">1.3 Flujo de Trabajo con Git en Equipos de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/04_guia_tecnica_adicional.html">1.4 Guía Técnica: Configuración de Entorno (Git + VS Code)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/05_taller_practico.html">1.5 Taller Práctico: El “Converter” Financiero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sesión 2 - Programación Orientada a Objetos</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_guia_poo.html">2.1 Guia Inicial para Programación Orientada a Objetos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_fundamentos_poo.html">2.2 Fundamentos de POO - La “Célula” del Dato</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_fundamentos_decoradores.html">2.3 Controlando el Flujo de Datos con Decoradores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_refactorizacion_hinting.html">2.4 Python Moderno - Tipado Estricto y Configuraciones Robustas</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2.5 Diseño de Pipelines Escalables con SOLID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_taller_practico.html">2.6 Proyecto Integrador - SmartPortfolio 🚀</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/contenidos/sesion2/05_principios_solid.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>2.5 Diseño de Pipelines Escalables con SOLID</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#s-single-responsibility-principle-srp">S - Single Responsibility Principle (SRP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#o-open-closed-principle-ocp">O - Open/Closed Principle (OCP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#l-liskov-substitution-principle-lsp">L - Liskov Substitution Principle (LSP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#i-interface-segregation-principle-isp">I - Interface Segregation Principle (ISP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-dependency-inversion-principle-dip">D - Dependency Inversion Principle (DIP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-solid-en-el-dia-a-dia-del-ingeniero-de-datos">Resumen: SOLID en el día a día del Ingeniero de Datos</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="diseno-de-pipelines-escalables-con-solid">
+<h1>2.5 Diseño de Pipelines Escalables con SOLID<a class="headerlink" href="#diseno-de-pipelines-escalables-con-solid" title="Link to this heading">#</a></h1>
+<p>¿Por qué se rompen los procesos de ETL (Extracción, Transformación y Carga) cuando el negocio pide un cambio pequeño? Generalmente, porque el código está “muy acoplado”: mover una pieza hace caer a las demás.</p>
+<p>Los principios SOLID (postulados por Robert C. Martin) son 5 reglas de oro para diseñar software que resista el cambio. Vamos a ver cómo aplican específicamente en el mundo de los Datos.</p>
+<section id="s-single-responsibility-principle-srp">
+<h2>S - Single Responsibility Principle (SRP)<a class="headerlink" href="#s-single-responsibility-principle-srp" title="Link to this heading">#</a></h2>
+<p>“<em>Un módulo debe tener una única razón para cambiar.</em>”</p>
+<p>El Problema en BI: Usted tiene un “Script Dios” (<code class="docutils literal notranslate"><span class="pre">etl_ventas.py</span></code>) que se conecta a la base de datos, limpia nulos, calcula el IVA y envía un correo al gerente.</p>
+<ul class="simple">
+<li><p>Si cambia la contraseña de la BD, edita el archivo.</p></li>
+<li><p>Si el gerente pide cambiar el asunto del correo, edita el <em>mismo</em> archivo.</p></li>
+<li><p>Riesgo: Al editar el correo, borra sin querer una línea de la conexión a la BD.</p></li>
+</ul>
+<p>La Solución: Dividir en especialistas.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Responsabilidad: Extraer</span>
+<span class="k">class</span> <span class="nc">ExtractorVentas</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">obtener_datos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">]</span>
+
+<span class="c1"># 2. Responsabilidad: Lógica de Negocio</span>
+<span class="k">class</span> <span class="nc">CalculadoraImpuestos</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">agregar_iva</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">montos</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">m</span> <span class="o">*</span> <span class="mf">1.19</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">montos</span><span class="p">]</span>
+
+<span class="c1"># 3. Responsabilidad: Comunicación</span>
+<span class="k">class</span> <span class="nc">Notificador</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">enviar_alerta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mensaje</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📧 Enviando: </span><span class="si">{</span><span class="n">mensaje</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Orquestador (Quien une las piezas)</span>
+<span class="k">def</span> <span class="nf">ejecutar_pipeline</span><span class="p">():</span>
+    <span class="n">datos</span> <span class="o">=</span> <span class="n">ExtractorVentas</span><span class="p">()</span><span class="o">.</span><span class="n">obtener_datos</span><span class="p">()</span>
+    <span class="n">datos_con_iva</span> <span class="o">=</span> <span class="n">CalculadoraImpuestos</span><span class="p">()</span><span class="o">.</span><span class="n">agregar_iva</span><span class="p">(</span><span class="n">datos</span><span class="p">)</span>
+    <span class="n">Notificador</span><span class="p">()</span><span class="o">.</span><span class="n">enviar_alerta</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Procesados </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">datos_con_iva</span><span class="p">)</span><span class="si">}</span><span class="s2"> registros.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="o-open-closed-principle-ocp">
+<h2>O - Open/Closed Principle (OCP)<a class="headerlink" href="#o-open-closed-principle-ocp" title="Link to this heading">#</a></h2>
+<p>“<em>Abierto para extensión, cerrado para modificación.</em>”</p>
+<p>El Problema en BI: Su jefe le pide exportar el reporte en CSV. A la semana siguiente, en JSON. A la siguiente, en Parquet.</p>
+<p>Si usted tiene una función llena de <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">formato</span> <span class="pre">==</span> <span class="pre">'csv':</span> <span class="pre">...</span> <span class="pre">elif</span> <span class="pre">formato</span> <span class="pre">==</span> <span class="pre">'json':</span> <span class="pre">...</span></code>, cada nuevo formato implica tocar código viejo que ya funcionaba, arriesgando bugs.</p>
+<p>La Solución: Polimorfismo. Definimos un “contrato” y creamos nuevas clases para nuevos formatos sin tocar las anteriores.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="c1"># El Contrato (Abstract Base Class)</span>
+<span class="k">class</span> <span class="nc">Exportador</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">guardar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datos</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<span class="c1"># Extensión 1</span>
+<span class="k">class</span> <span class="nc">ExportadorCSV</span><span class="p">(</span><span class="n">Exportador</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">guardar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datos</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;💾 Guardando en .csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Extensión 2 (Nueva funcionalidad)</span>
+<span class="k">class</span> <span class="nc">ExportadorJSON</span><span class="p">(</span><span class="n">Exportador</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">guardar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datos</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;💾 Guardando en .json&quot;</span><span class="p">)</span>
+
+<span class="c1"># El Pipeline no sabe qué formato usa, solo sabe que puede &quot;guardar&quot;</span>
+<span class="k">def</span> <span class="nf">finalizar_proceso</span><span class="p">(</span><span class="n">exportador</span><span class="p">:</span> <span class="n">Exportador</span><span class="p">,</span> <span class="n">datos</span><span class="p">):</span>
+    <span class="n">exportador</span><span class="o">.</span><span class="n">guardar</span><span class="p">(</span><span class="n">datos</span><span class="p">)</span> 
+
+<span class="c1"># Uso:</span>
+<span class="n">finalizar_proceso</span><span class="p">(</span><span class="n">ExportadorJSON</span><span class="p">(),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="l-liskov-substitution-principle-lsp">
+<h2>L - Liskov Substitution Principle (LSP)<a class="headerlink" href="#l-liskov-substitution-principle-lsp" title="Link to this heading">#</a></h2>
+<p>“<em>Las subclases deben ser sustituibles por sus clases base sin romper el programa.</em>”</p>
+<p>El Problema en BI: Imagine que tiene una clase padre FuenteDatos que devuelve un DataFrame. Usted crea una hija <code class="docutils literal notranslate"><span class="pre">FuenteAPI</span></code> que devuelve un <strong>Diccionario JSON</strong>. Si el pipeline espera un DataFrame y recibe un diccionario, el código explotará (<code class="docutils literal notranslate"><span class="pre">AttributeError:</span> <span class="pre">'dict'</span> <span class="pre">has</span> <span class="pre">no</span> <span class="pre">attribute</span> <span class="pre">'head'</span></code>).</p>
+<p>La Regla: Si la clase padre promete devolver un pato, la clase hija no puede devolver un tigre.</p>
+<p>La Solución: Estandarizar salidas.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="k">class</span> <span class="nc">FuenteDatos</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">leer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span> <span class="c1"># El contrato promete un DataFrame</span>
+        <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">FuenteSQL</span><span class="p">(</span><span class="n">FuenteDatos</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">leer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;ventas&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]})</span>
+
+<span class="c1"># VIOLACIÓN DE LISKOV (Lo que NO se debe hacer)</span>
+<span class="k">class</span> <span class="nc">FuenteAPI_Mala</span><span class="p">(</span><span class="n">FuenteDatos</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">leer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;ventas&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]}</span> <span class="c1"># ❌ Rompe el contrato, devuelve dict</span>
+
+<span class="c1"># CUMPLIMIENTO DE LISKOV (Lo correcto)</span>
+<span class="k">class</span> <span class="nc">FuenteAPI_Buena</span><span class="p">(</span><span class="n">FuenteDatos</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">leer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ventas&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]}</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">json_data</span><span class="p">)</span> <span class="c1"># ✅ Convierte a DataFrame antes de devolver</span>
+</pre></div>
+</div>
+</section>
+<section id="i-interface-segregation-principle-isp">
+<h2>I - Interface Segregation Principle (ISP)<a class="headerlink" href="#i-interface-segregation-principle-isp" title="Link to this heading">#</a></h2>
+<p>“<em>Los clientes no deben depender de métodos que no usan.</em>”</p>
+<p>El Problema en BI: Creamos una “Mega-Interfaz” llamada <code class="docutils literal notranslate"><span class="pre">ConectorDatos</span></code> que obliga a tener <code class="docutils literal notranslate"><span class="pre">leer_sql</span></code>, <code class="docutils literal notranslate"><span class="pre">escribir_sql</span></code>, <code class="docutils literal notranslate"><span class="pre">enviar_email</span></code>. Si creo una clase para leer un archivo local (<code class="docutils literal notranslate"><span class="pre">LectorCSV</span></code>), me veo obligado a implementar <code class="docutils literal notranslate"><span class="pre">enviar_email</span></code> (dejándolo vacío o lanzando error) aunque un CSV no envíe emails. Eso es código sucio.</p>
+<p><img alt="Interface Segregation Principle" src="../../_images/isp.jpg" /></p>
+<p>La Solución: Interfaces pequeñas y específicas.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Mal diseño: Interfaz gigante</span>
+<span class="c1"># class ConectorTodoPoderoso(ABC):</span>
+<span class="c1">#     def leer(self): pass</span>
+<span class="c1">#     def escribir(self): pass</span>
+<span class="c1">#     def auditar(self): pass</span>
+
+<span class="c1"># Buen diseño: Interfaces segregadas</span>
+<span class="k">class</span> <span class="nc">Lector</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">leer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">Escritor</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">escribir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datos</span><span class="p">):</span> <span class="k">pass</span>
+
+<span class="c1"># Ahora puedo tener una clase que SOLO lee (ej. archivo de configuración)</span>
+<span class="c1"># sin estar obligada a saber cómo escribir.</span>
+<span class="k">class</span> <span class="nc">ConfigLoader</span><span class="p">(</span><span class="n">Lector</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">leer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Configuración cargada&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="d-dependency-inversion-principle-dip">
+<h2>D - Dependency Inversion Principle (DIP)<a class="headerlink" href="#d-dependency-inversion-principle-dip" title="Link to this heading">#</a></h2>
+<p>“<em>Dependa de abstracciones, no de concreciones.</em>”</p>
+<p>Este es el principio más importante para Testing.</p>
+<p>El Problema en BI: Si dentro de su clase Reporte usted escribe <code class="docutils literal notranslate"><span class="pre">self.db</span> <span class="pre">=</span> <span class="pre">MySQLConnection()</span></code>, su reporte está “casado” con MySQL. Si quiere probar el reporte en su computador local (donde no tiene MySQL instalado), no puede. El código fallará.</p>
+<p>La Solución: Inyección de Dependencias. El reporte no crea la conexión, la recibe.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Abstracción</span>
+<span class="k">class</span> <span class="nc">BaseDatos</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">obtener_ventas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span>
+
+<span class="c1"># Concreción 1: La base real</span>
+<span class="k">class</span> <span class="nc">MySQLProduccion</span><span class="p">(</span><span class="n">BaseDatos</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">obtener_ventas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">200</span><span class="p">]</span> <span class="c1"># Conecta a la BD real</span>
+
+<span class="c1"># Concreción 2: Base falsa para pruebas (Mock)</span>
+<span class="k">class</span> <span class="nc">BaseDatosFalsa</span><span class="p">(</span><span class="n">BaseDatos</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">obtener_ventas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span> <span class="c1"># Datos controlados para testear</span>
+
+<span class="c1"># Clase de Alto Nivel</span>
+<span class="k">class</span> <span class="nc">GeneradorReporte</span><span class="p">:</span>
+    <span class="c1"># 💉 INYECCIÓN DE DEPENDENCIA: Recibimos la BD, no la creamos adentro</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">:</span> <span class="n">BaseDatos</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">db</span>
+
+    <span class="k">def</span> <span class="nf">total_ventas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">obtener_ventas</span><span class="p">())</span>
+
+<span class="c1"># Escenario A: Producción</span>
+<span class="n">reporte_real</span> <span class="o">=</span> <span class="n">GeneradorReporte</span><span class="p">(</span><span class="n">MySQLProduccion</span><span class="p">())</span>
+
+<span class="c1"># Escenario B: Testing (Sin conexión a internet ni BD)</span>
+<span class="n">reporte_test</span> <span class="o">=</span> <span class="n">GeneradorReporte</span><span class="p">(</span><span class="n">BaseDatosFalsa</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test total: </span><span class="si">{</span><span class="n">reporte_test</span><span class="o">.</span><span class="n">total_ventas</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># Funciona perfecto</span>
+</pre></div>
+</div>
+</section>
+<section id="resumen-solid-en-el-dia-a-dia-del-ingeniero-de-datos">
+<h2>Resumen: SOLID en el día a día del Ingeniero de Datos<a class="headerlink" href="#resumen-solid-en-el-dia-a-dia-del-ingeniero-de-datos" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>🔤 Letra</p></th>
+<th class="head"><p>🧠 Principio</p></th>
+<th class="head"><p>🏢 Traducción al BI real</p></th>
+<th class="head"><p>🚀 ¿Cuándo aplicarlo?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>S</strong></p></td>
+<td><p><em>Single Responsibility</em></p></td>
+<td><p>No mezcles extracción, transformación y envío en el mismo script. Divide capas.</p></td>
+<td><p>Cuando un <code class="docutils literal notranslate"><span class="pre">.py</span></code> supera 200 líneas o tiene múltiples responsabilidades.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>O</strong></p></td>
+<td><p><em>Open/Closed</em></p></td>
+<td><p>Nuevas entradas = nuevas clases. No sigas metiendo <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">fuente</span> <span class="pre">==</span> <span class="pre">...</span></code>.</p></td>
+<td><p>Si vas agregando JSON, Excel, SQL, API, Parquet, etc.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>L</strong></p></td>
+<td><p><em>Liskov Substitution</em></p></td>
+<td><p>Todas las fuentes deberían devolver el <strong>mismo tipo</strong>, ej. DataFrame.</p></td>
+<td><p>Cuando integras SQL + API + archivos en un proceso único.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>I</strong></p></td>
+<td><p><em>Interface Segregation</em></p></td>
+<td><p>No obligues a un conector <em>Read-Only</em> a implementar métodos <code class="docutils literal notranslate"><span class="pre">write()</span></code>.</p></td>
+<td><p>Cuando creas librerías internas o SDKs del equipo.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>D</strong></p></td>
+<td><p><em>Dependency Inversion</em></p></td>
+<td><p>Pasa la conexión o cliente externo como parámetro, no lo construyas adentro.</p></td>
+<td><p>Para testear sin acceder a producción y reducir acoplamiento.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./contenidos\sesion2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="04_refactorizacion_hinting.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">2.4 Python Moderno - Tipado Estricto y Configuraciones Robustas</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="06_taller_practico.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">2.6 Proyecto Integrador - SmartPortfolio 🚀</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#s-single-responsibility-principle-srp">S - Single Responsibility Principle (SRP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#o-open-closed-principle-ocp">O - Open/Closed Principle (OCP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#l-liskov-substitution-principle-lsp">L - Liskov Substitution Principle (LSP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#i-interface-segregation-principle-isp">I - Interface Segregation Principle (ISP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-dependency-inversion-principle-dip">D - Dependency Inversion Principle (DIP)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-solid-en-el-dia-a-dia-del-ingeniero-de-datos">Resumen: SOLID en el día a día del Ingeniero de Datos</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Maestría en Inteligencia de Negocios
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
+  <p>Universidad Externado de Colombia</p>
+</div>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

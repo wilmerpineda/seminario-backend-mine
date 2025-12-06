@@ -1,0 +1,574 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2.2 Fundamentos de POO - La “Célula” del Dato &#8212; Seminario de Programación</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'contenidos/sesion2/02_fundamentos_poo';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.3 Controlando el Flujo de Datos con Decoradores" href="03_fundamentos_decoradores.html" />
+    <link rel="prev" title="2.1 Guia Inicial para Programación Orientada a Objetos" href="01_guia_poo.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo-uec.png" class="logo__image only-light" alt="Seminario de Programación - Home"/>
+    <script>document.write(`<img src="../../_static/logo-uec.png" class="logo__image only-dark" alt="Seminario de Programación - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Seminario de Programación: Backend para Ciencia de Datos
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sesión 1 - Ingeniería de Software para Datos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/01_gestion_dependencias.html">1.1 Del Caos al Orden: Gestión de Dependencias con Poetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/02_estructura_proyecto.html">1.2 Anatomía de un Proyecto de Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/03_git_workflow.html">1.3 Flujo de Trabajo con Git en Equipos de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/04_guia_tecnica_adicional.html">1.4 Guía Técnica: Configuración de Entorno (Git + VS Code)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/05_taller_practico.html">1.5 Taller Práctico: El “Converter” Financiero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sesión 2 - Programación Orientada a Objetos</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_guia_poo.html">2.1 Guia Inicial para Programación Orientada a Objetos</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2.2 Fundamentos de POO - La “Célula” del Dato</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_fundamentos_decoradores.html">2.3 Controlando el Flujo de Datos con Decoradores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_refactorizacion_hinting.html">2.4 Python Moderno - Tipado Estricto y Configuraciones Robustas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_principios_solid.html">2.5 Diseño de Pipelines Escalables con SOLID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_taller_practico.html">2.6 Proyecto Integrador - SmartPortfolio 🚀</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/contenidos/sesion2/02_fundamentos_poo.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>2.2 Fundamentos de POO - La “Célula” del Dato</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-self-contexto-de-la-fila-actual">1. El <code class="docutils literal notranslate"><span class="pre">self</span></code>: Contexto de la Fila Actual</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-modelando-un-kpi-indicador-clave-de-desempeno">Ejemplo: Modelando un KPI (Indicador Clave de Desempeño)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#init-garantia-de-calidad-desde-el-origen">2. <code class="docutils literal notranslate"><span class="pre">__init__</span></code>: Garantía de Calidad desde el Origen</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="fundamentos-de-poo-la-celula-del-dato">
+<h1>2.2 Fundamentos de POO - La “Célula” del Dato<a class="headerlink" href="#fundamentos-de-poo-la-celula-del-dato" title="Link to this heading">#</a></h1>
+<p>En Inteligencia de Negocios, estamos acostumbrados a pensar en tablas gigantes (DataFrames). Sin embargo, cuando construimos pipelines de datos robustos, a veces necesitamos controlar la lógica fila por fila o entidad por entidad.</p>
+<p>Aquí es donde la POO brilla: nos permite definir <strong>qué es</strong> un dato válido y qué puede hacer.</p>
+<section id="el-self-contexto-de-la-fila-actual">
+<h2>1. El <code class="docutils literal notranslate"><span class="pre">self</span></code>: Contexto de la Fila Actual<a class="headerlink" href="#el-self-contexto-de-la-fila-actual" title="Link to this heading">#</a></h2>
+<p>Imagine que está procesando un Excel con 10,000 transacciones.</p>
+<ul class="simple">
+<li><p><strong>Enfoque Procedimental</strong> : Usted tiene una lista de números y pasa listas a funciones. Es difícil rastrear qué dato pertenece a qué cliente.</p></li>
+<li><p><strong>Enfoque Orientado a Objetos</strong> : Cada fila se convierte en un objeto inteligente que sabe sus propios valores.</p></li>
+</ul>
+<p>En este contexto, <code class="docutils literal notranslate"><span class="pre">self</span></code> es “<strong>Esta fila específica que estoy procesando ahora mismo</strong>”.</p>
+<section id="ejemplo-modelando-un-kpi-indicador-clave-de-desempeno">
+<h3>Ejemplo: Modelando un KPI (Indicador Clave de Desempeño)<a class="headerlink" href="#ejemplo-modelando-un-kpi-indicador-clave-de-desempeno" title="Link to this heading">#</a></h3>
+<p>No piense en una clase como una “plantilla”, piénsela como una <strong>Definición de Métrica</strong>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">KPIVentas</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">venta_real</span><span class="p">,</span> <span class="n">meta_mensual</span><span class="p">):</span>
+        <span class="c1"># ESTADO: Los datos crudos de este registro</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">region</span> <span class="o">=</span> <span class="n">region</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">venta_real</span> <span class="o">=</span> <span class="n">venta_real</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">meta_mensual</span>
+        
+    <span class="k">def</span> <span class="nf">calcular_cumplimiento</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># COMPORTAMIENTO: Lógica de negocio encapsulada</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">venta_real</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+
+    <span class="k">def</span> <span class="nf">estado_alerta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Regla de negocio: ¿Debemos preocuparnos?</span>
+        <span class="n">cumplimiento</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcular_cumplimiento</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">cumplimiento</span> <span class="o">&lt;</span> <span class="mi">70</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;ROJO: Riesgo Crítico&quot;</span>
+        <span class="k">elif</span> <span class="n">cumplimiento</span> <span class="o">&lt;</span> <span class="mi">90</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;AMARILLO: Atención&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;VERDE: Saludable&quot;</span>
+
+<span class="c1"># Procesamiento de datos (Simulando un loop de ETL)</span>
+<span class="n">datos_brutos</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;zona&quot;</span><span class="p">:</span> <span class="s2">&quot;Norte&quot;</span><span class="p">,</span> <span class="s2">&quot;real&quot;</span><span class="p">:</span> <span class="mi">8500</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;zona&quot;</span><span class="p">:</span> <span class="s2">&quot;Sur&quot;</span><span class="p">,</span> <span class="s2">&quot;real&quot;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">datos_brutos</span><span class="p">:</span>
+    <span class="c1"># 1. Instanciamos (Convertimos datos muertos en objetos vivos)</span>
+    <span class="n">kpi</span> <span class="o">=</span> <span class="n">KPIVentas</span><span class="p">(</span><span class="n">fila</span><span class="p">[</span><span class="s2">&quot;zona&quot;</span><span class="p">],</span> <span class="n">fila</span><span class="p">[</span><span class="s2">&quot;real&quot;</span><span class="p">],</span> <span class="n">fila</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">])</span>
+    
+    <span class="c1"># 2. Le preguntamos al objeto (self sabe sus propios datos)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Zona </span><span class="si">{</span><span class="n">kpi</span><span class="o">.</span><span class="n">region</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">kpi</span><span class="o">.</span><span class="n">calcular_cumplimiento</span><span class="p">()</span><span class="si">}</span><span class="s2">% - </span><span class="si">{</span><span class="n">kpi</span><span class="o">.</span><span class="n">estado_alerta</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Salida:</span>
+<span class="c1"># Zona Norte: 85.0% - AMARILLO: Atención</span>
+<span class="c1"># Zona Sur: 40.0% - ROJO: Riesgo Crítico</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="init-garantia-de-calidad-desde-el-origen">
+<h2>2. <code class="docutils literal notranslate"><span class="pre">__init__</span></code>: Garantía de Calidad desde el Origen<a class="headerlink" href="#init-garantia-de-calidad-desde-el-origen" title="Link to this heading">#</a></h2>
+<p>El <code class="docutils literal notranslate"><span class="pre">__init__</span></code> es su primera línea de defensa en Calidad de Datos. Úselo para asegurar que un objeto no pueda existir si sus datos están sucios o incompletos.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TransaccionFinanciera</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">monto</span><span class="p">,</span> <span class="n">moneda</span><span class="p">):</span>
+        <span class="c1"># Validación de Calidad de Datos al instanciar</span>
+        <span class="k">if</span> <span class="n">monto</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Error de Calidad: No se permiten transacciones negativas en este flujo.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">moneda</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;USD&#39;</span><span class="p">,</span> <span class="s1">&#39;COP&#39;</span><span class="p">,</span> <span class="s1">&#39;EUR&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error de Calidad: Moneda &#39;</span><span class="si">{</span><span class="n">moneda</span><span class="si">}</span><span class="s2">&#39; no soportada.&quot;</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">monto</span> <span class="o">=</span> <span class="n">monto</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moneda</span> <span class="o">=</span> <span class="n">moneda</span>
+
+<span class="c1"># Intento de crear dato sucio</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">tx</span> <span class="o">=</span> <span class="n">TransaccionFinanciera</span><span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;PESOS&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dato descartado: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># Salida: Dato descartado: Error de Calidad: No se permiten transacciones negativas...</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./contenidos\sesion2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01_guia_poo.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">2.1 Guia Inicial para Programación Orientada a Objetos</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03_fundamentos_decoradores.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">2.3 Controlando el Flujo de Datos con Decoradores</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-self-contexto-de-la-fila-actual">1. El <code class="docutils literal notranslate"><span class="pre">self</span></code>: Contexto de la Fila Actual</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-modelando-un-kpi-indicador-clave-de-desempeno">Ejemplo: Modelando un KPI (Indicador Clave de Desempeño)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#init-garantia-de-calidad-desde-el-origen">2. <code class="docutils literal notranslate"><span class="pre">__init__</span></code>: Garantía de Calidad desde el Origen</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Maestría en Inteligencia de Negocios
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
+  <p>Universidad Externado de Colombia</p>
+</div>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

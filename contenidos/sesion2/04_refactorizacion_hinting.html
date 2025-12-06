@@ -1,0 +1,776 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2.4 Python Moderno - Tipado Estricto y Configuraciones Robustas &#8212; Seminario de Programación</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'contenidos/sesion2/04_refactorizacion_hinting';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.5 Diseño de Pipelines Escalables con SOLID" href="05_principios_solid.html" />
+    <link rel="prev" title="2.3 Controlando el Flujo de Datos con Decoradores" href="03_fundamentos_decoradores.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo-uec.png" class="logo__image only-light" alt="Seminario de Programación - Home"/>
+    <script>document.write(`<img src="../../_static/logo-uec.png" class="logo__image only-dark" alt="Seminario de Programación - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Seminario de Programación: Backend para Ciencia de Datos
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sesión 1 - Ingeniería de Software para Datos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/01_gestion_dependencias.html">1.1 Del Caos al Orden: Gestión de Dependencias con Poetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/02_estructura_proyecto.html">1.2 Anatomía de un Proyecto de Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/03_git_workflow.html">1.3 Flujo de Trabajo con Git en Equipos de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/04_guia_tecnica_adicional.html">1.4 Guía Técnica: Configuración de Entorno (Git + VS Code)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/05_taller_practico.html">1.5 Taller Práctico: El “Converter” Financiero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sesión 2 - Programación Orientada a Objetos</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_guia_poo.html">2.1 Guia Inicial para Programación Orientada a Objetos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_fundamentos_poo.html">2.2 Fundamentos de POO - La “Célula” del Dato</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_fundamentos_decoradores.html">2.3 Controlando el Flujo de Datos con Decoradores</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2.4 Python Moderno - Tipado Estricto y Configuraciones Robustas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_principios_solid.html">2.5 Diseño de Pipelines Escalables con SOLID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_taller_practico.html">2.6 Proyecto Integrador - SmartPortfolio 🚀</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/contenidos/sesion2/04_refactorizacion_hinting.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>2.4 Python Moderno - Tipado Estricto y Configuraciones Robustas</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-tabla-periodica-del-tipado-en-datos">1. La “Tabla Periódica” del Tipado en Datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-poder-de-las-dataclasses-objetos-de-configuracion">2. El Poder de las Dataclasses: Objetos de Configuración</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-hacemos-esto">¿Por qué hacemos esto?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#caso-practico-refactorizando-el-exploradordatos">3. Caso Práctico: Refactorizando el ExploradorDatos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo">Objetivo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-1-centralizar-la-configuracion-dataclasses">Paso 1: Centralizar la Configuración (Dataclasses)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-2-blindando-el-constructor-init">Paso 2: Blindando el Constructor (<code class="docutils literal notranslate"><span class="pre">__init__</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-3-tipado-en-metodos-de-visualizacion">Paso 3: Tipado en Métodos de Visualización</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-4-agregando-inteligencia-de-negocio">Paso 4: Agregando Inteligencia de Negocio</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado-final-como-usar-su-nueva-clase">Resultado Final: Cómo usar su nueva clase</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#que-hemos-ganado">¿Qué hemos ganado?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="python-moderno-tipado-estricto-y-configuraciones-robustas">
+<h1>2.4 Python Moderno - Tipado Estricto y Configuraciones Robustas<a class="headerlink" href="#python-moderno-tipado-estricto-y-configuraciones-robustas" title="Link to this heading">#</a></h1>
+<p>En el mundo de la Inteligencia de Negocios, un error de “tipo de dato” puede costar horas de reprocesamiento. Si una función espera una lista de columnas y recibe un solo string, el script falla. Si espera un DataFrame y recibe un diccionario, falla.</p>
+<p>Python moderno (3.9+) nos permite blindar nuestro código usando Type Hints (pistas de tipo) y <strong>Dataclasses</strong>. Ya no adivinamos qué entra a una función; lo declaramos explícitamente.</p>
+<section id="la-tabla-periodica-del-tipado-en-datos">
+<h2>1. La “Tabla Periódica” del Tipado en Datos<a class="headerlink" href="#la-tabla-periodica-del-tipado-en-datos" title="Link to this heading">#</a></h2>
+<p>Antes de escribir código, definamos cuándo usar cada estructura. Para un perfil de datos, esta es la guía de referencia:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>🧩 <strong>Tipo</strong></p></th>
+<th class="head"><p>🔤 <strong>Sintaxis escrita</strong></p></th>
+<th class="head"><p>🔎 <strong>Cuándo usarlo en BI</strong></p></th>
+<th class="head"><p>💡 <strong>Ejemplo aplicado al negocio</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>DataFrame</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></p></td>
+<td><p>Cuando usamos la tabla completa como base del análisis.</p></td>
+<td><p>Input de un modelo, dashboards, simulaciones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>List</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">List[tipo]</span></code> / <code class="docutils literal notranslate"><span class="pre">list[tipo]</span></code></p></td>
+<td><p>Conjunto ordenado de elementos homogéneos.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">['ventas',</span> <span class="pre">'costos',</span> <span class="pre">'margen']</span></code> para features objetivo.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Dict</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Dict[key,</span> <span class="pre">value]</span></code> / <code class="docutils literal notranslate"><span class="pre">dict[key,</span> <span class="pre">value]</span></code></p></td>
+<td><p>Mapear claves ↔ valores, renombrar columnas.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'ciu':'Ciudad','vta':'Ventas'}</span></code> limpieza de metadata.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Tuple</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Tuple[t1,</span> <span class="pre">t2]</span></code></p></td>
+<td><p>Datos inmutables: tamaños, coordenadas, pares clave.</p></td>
+<td><p>Tamaño gráfico <code class="docutils literal notranslate"><span class="pre">(10,6)</span></code> o ubicación <code class="docutils literal notranslate"><span class="pre">(lat,lon)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Optional</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Optional[tipo]</span></code></p></td>
+<td><p>Cuando un argumento puede ser <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">titulo:</span> <span class="pre">Optional[str]</span></code> para reportes opcionales.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Union</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Union[A,</span> <span class="pre">B]</span></code></p></td>
+<td><p>Parámetros multiformato (mejor evitar si se puede).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Union[int,</span> <span class="pre">str]</span></code> id de cliente como número o string.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A continuación se muestra un demo de una clase que utiliza las seis clases de tipado.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="k">def</span> <span class="nf">analizar_metricas</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>                <span class="c1"># DataFrame principal</span>
+    <span class="n">columnas</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>               <span class="c1"># Selección de variables</span>
+    <span class="n">mapeo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># Renombres opcionales</span>
+    <span class="n">size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>   <span class="c1"># Tuple para dimensiones de salida</span>
+    <span class="n">id_cliente</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0000&quot;</span>  <span class="c1"># Valor flexible (int ó str)</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ejemplo aplicable a BI — cálculo simple con anotaciones limpias.&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">mapeo</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">mapeo</span><span class="p">)</span>   <span class="c1"># Dict</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">columnas</span><span class="p">]</span>                     <span class="c1"># List</span>
+    
+    <span class="n">resumen</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>                 <span class="c1"># Operación estadística</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reporte para cliente </span><span class="si">{</span><span class="n">id_cliente</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tamaño de visualización: </span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">resumen</span>
+</pre></div>
+</div>
+</section>
+<section id="el-poder-de-las-dataclasses-objetos-de-configuracion">
+<h2>2. El Poder de las Dataclasses: Objetos de Configuración<a class="headerlink" href="#el-poder-de-las-dataclasses-objetos-de-configuracion" title="Link to this heading">#</a></h2>
+<p>En lugar de pasar 10 parámetros sueltos a una función (<code class="docutils literal notranslate"><span class="pre">color='red'</span></code>, <code class="docutils literal notranslate"><span class="pre">ancho=5</span></code>, <code class="docutils literal notranslate"><span class="pre">limite=0.8</span></code>…), es una mejor práctica agruparlos en un <em>Objeto de Configuración</em>.</p>
+<p>Vamos a crear una <strong>Dataclass</strong> que controle las reglas de nuestro Análisis Exploratorio (EDA).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ConfiguracionEDA</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Define los parámetros globales para estandarizar los reportes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dimensiones_figura</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">paleta_colores</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;viridis&quot;</span>
+    <span class="n">estilo_seaborn</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;whitegrid&quot;</span>
+    <span class="c1"># Parámetro de Negocio: ¿A partir de qué valor consideramos una correlación &#39;fuerte&#39;?</span>
+    <span class="n">umbral_correlacion</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.75</span> 
+</pre></div>
+</div>
+<section id="por-que-hacemos-esto">
+<h3>¿Por qué hacemos esto?<a class="headerlink" href="#por-que-hacemos-esto" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Centralización: Si queremos cambiar el tamaño de TODOS los gráficos del reporte, solo cambiamos este objeto.</p></li>
+<li><p>Autocompletado: El editor de código nos mostrará qué configuraciones existen.</p></li>
+</ul>
+</section>
+</section>
+<section id="caso-practico-refactorizando-el-exploradordatos">
+<h2>3. Caso Práctico: Refactorizando el ExploradorDatos<a class="headerlink" href="#caso-practico-refactorizando-el-exploradordatos" title="Link to this heading">#</a></h2>
+<p>Vamos a tomar la siguiente clase base y la convertiremos en una herramienta profesional usando todo lo aprendido.</p>
+<section id="objetivo">
+<h3>Objetivo<a class="headerlink" href="#objetivo" title="Link to this heading">#</a></h3>
+<p>Crear un analizador que:</p>
+<ul class="simple">
+<li><p>Use <em>Tipado Estricto</em> en todos sus métodos.</p></li>
+<li><p>Use la <em>Dataclass</em> para configurar gráficos y reglas.</p></li>
+<li><p>Detecte automáticamente variables altamente correlacionadas (usando el umbral configurado).</p></li>
+</ul>
+<p><a href="../../extras/analisis_eda.py" download style="
+   background:#4CAF50; padding:8px 14px; color:white; border-radius:6px;
+   text-decoration:none; font-weight:bold;">
+📥 Descargar script .py
+</a></p>
+</section>
+<section id="paso-1-centralizar-la-configuracion-dataclasses">
+<h3>Paso 1: Centralizar la Configuración (Dataclasses)<a class="headerlink" href="#paso-1-centralizar-la-configuracion-dataclasses" title="Link to this heading">#</a></h3>
+<p>Abra el archivo <code class="docutils literal notranslate"><span class="pre">analisis_eda.py</span></code>. Note que en analisis_univariado, el tamaño de la figura es <code class="docutils literal notranslate"><span class="pre">(10,</span> <span class="pre">6)</span></code> y el estilo es <code class="docutils literal notranslate"><span class="pre">seaborn-v0_8-whitegrid</span></code>.</p>
+<p>Problema: Si queremos cambiar el estilo en los 50 gráficos del reporte, tenemos que buscar y reemplazar línea por línea.</p>
+<p>Solución: Vamos a crear un objeto de configuración usando dataclasses.</p>
+<p>📝 Tarea: Agregue esto al inicio de su script (recuerde importar dataclass y Tuple).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ConfiguracionEDA</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Control remoto para todos los parámetros visuales y reglas de negocio.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dimensiones</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">tema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;whitegrid&quot;</span>
+    <span class="c1"># Regla de Negocio: Umbral para alertas de correlación</span>
+    <span class="n">umbral_alerta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span>
+</pre></div>
+</div>
+</section>
+<section id="paso-2-blindando-el-constructor-init">
+<h3>Paso 2: Blindando el Constructor (<code class="docutils literal notranslate"><span class="pre">__init__</span></code>)<a class="headerlink" href="#paso-2-blindando-el-constructor-init" title="Link to this heading">#</a></h3>
+<p>Vamos a modificar la clase para que reciba nuestra nueva configuración.</p>
+<p>🔴 Código Original (Legacy)</p>
+<p>El código original solo verificaba si era un DataFrame, pero no nos decía nada más.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ExploradorDatos</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">):</span>
+        <span class="c1"># ... validación básica ...</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datos</span> <span class="o">=</span> <span class="n">dataframe</span>
+</pre></div>
+</div>
+<p>🟢 Código Moderno (Refactorizado)</p>
+<p>Vamos a inyectar la configuración y usar Type Hints para que el editor nos ayude.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Asegúrese de importar: import pandas as pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="k">class</span> <span class="nc">ExploradorDatosModerno</span><span class="p">:</span>
+    <span class="c1"># 1. Type Hinting: Declaramos explícitamente qué entra</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">ConfiguracionEDA</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span> <span class="c1"># Guardamos la configuración</span>
+        
+        <span class="c1"># 2. Aplicamos el tema globalmente una sola vez</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tema</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Explorador inicializado con umbral </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">umbral_alerta</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="paso-3-tipado-en-metodos-de-visualizacion">
+<h3>Paso 3: Tipado en Métodos de Visualización<a class="headerlink" href="#paso-3-tipado-en-metodos-de-visualizacion" title="Link to this heading">#</a></h3>
+<p>Miremos el método <code class="docutils literal notranslate"><span class="pre">analisis_univariado</span></code>. Originalmente recibe columna, pero no dice si es un string o una lista.</p>
+<p>🔴 Código Original</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">analisis_univariado</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columna</span><span class="p">):</span>
+    <span class="c1"># ... código con plt.figure(figsize=(10, 6)) quemado ...</span>
+    <span class="c1"># ... código con sns.histplot ...</span>
+</pre></div>
+</div>
+<p>🟢 Código Moderno</p>
+<p>Reemplazamos los valores fijos por <code class="docutils literal notranslate"><span class="pre">self.config</span></code> y añadimos tipado. Además, usaremos <code class="docutils literal notranslate"><span class="pre">Optional</span></code> para permitir títulos personalizados.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+    <span class="k">def</span> <span class="nf">plot_distribucion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columna</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">titulo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">columna</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">columna</span><span class="si">}</span><span class="s2"> no existe.&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># USAMOS LA CONFIGURACIÓN (Adiós números mágicos)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dimensiones</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_numeric_dtype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">columna</span><span class="p">]):</span>
+            <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">columna</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">columna</span><span class="p">)</span>
+            
+        <span class="c1"># Lógica condicional limpia</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">titulo</span> <span class="k">if</span> <span class="n">titulo</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;Distribución de </span><span class="si">{</span><span class="n">columna</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="paso-4-agregando-inteligencia-de-negocio">
+<h3>Paso 4: Agregando Inteligencia de Negocio<a class="headerlink" href="#paso-4-agregando-inteligencia-de-negocio" title="Link to this heading">#</a></h3>
+<p>Ahora que tenemos una estructura robusta, agreguemos una funcionalidad nueva que use nuestro <code class="docutils literal notranslate"><span class="pre">umbral_alerta</span></code>.</p>
+<p>Vamos a crear un método que devuelva una <strong>Lista de Strings</strong> (<code class="docutils literal notranslate"><span class="pre">List[str]</span></code>) con las advertencias de columnas que se parecen demasiado (colinealidad).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+    <span class="k">def</span> <span class="nf">detectar_alertas</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Devuelve advertencias si la correlación supera el umbral configurado.&quot;&quot;&quot;</span>
+        
+        <span class="c1"># 1. Solo numéricas</span>
+        <span class="n">df_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">)</span>
+        <span class="n">matriz</span> <span class="o">=</span> <span class="n">df_num</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+        
+        <span class="n">alertas</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Declaramos una lista vacía de textos</span>
+        
+        <span class="n">cols</span> <span class="o">=</span> <span class="n">matriz</span><span class="o">.</span><span class="n">columns</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)):</span>
+                <span class="n">valor</span> <span class="o">=</span> <span class="n">matriz</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+                
+                <span class="c1"># 2. Usamos la regla de negocio de la Dataclass</span>
+                <span class="k">if</span> <span class="n">valor</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">umbral_alerta</span><span class="p">:</span>
+                    <span class="n">alertas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;⚠️ Alerta: </span><span class="si">{</span><span class="n">cols</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2"> vs </span><span class="si">{</span><span class="n">cols</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">valor</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">alertas</span>
+</pre></div>
+</div>
+</section>
+<section id="resultado-final-como-usar-su-nueva-clase">
+<h3>Resultado Final: Cómo usar su nueva clase<a class="headerlink" href="#resultado-final-como-usar-su-nueva-clase" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Definimos las reglas del juego (Configuración)</span>
+<span class="n">mis_reglas</span> <span class="o">=</span> <span class="n">ConfiguracionEDA</span><span class="p">(</span>
+    <span class="n">dimensiones</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+    <span class="n">tema</span><span class="o">=</span><span class="s2">&quot;darkgrid&quot;</span><span class="p">,</span>
+    <span class="n">umbral_alerta</span><span class="o">=</span><span class="mf">0.9</span>
+<span class="p">)</span>
+
+<span class="c1"># 2. Instanciamos con seguridad</span>
+<span class="n">analista</span> <span class="o">=</span> <span class="n">ExploradorDatosModerno</span><span class="p">(</span><span class="n">df_ventas</span><span class="p">,</span> <span class="n">mis_reglas</span><span class="p">)</span>
+
+<span class="c1"># 3. Ejecutamos</span>
+<span class="n">analista</span><span class="o">.</span><span class="n">plot_distribucion</span><span class="p">(</span><span class="s2">&quot;Monto_Venta&quot;</span><span class="p">)</span>
+
+<span class="c1"># 4. Verificamos calidad de datos</span>
+<span class="n">reporte</span> <span class="o">=</span> <span class="n">analista</span><span class="o">.</span><span class="n">detectar_alertas</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">aviso</span> <span class="ow">in</span> <span class="n">reporte</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">aviso</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="que-hemos-ganado">
+<h4>¿Qué hemos ganado?<a class="headerlink" href="#que-hemos-ganado" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Flexibilidad: Cambiando una sola línea en <code class="docutils literal notranslate"><span class="pre">ConfiguracionEDA</span></code>, todo el reporte cambia de estilo o sensibilidad.</p></li>
+<li><p>Seguridad: Si intenta pasar un número donde va el dataframe, su editor le avisará antes de ejecutar.</p></li>
+<li><p>Claridad: El código se explica solo. <code class="docutils literal notranslate"><span class="pre">-&gt;</span> <span class="pre">List[str]</span></code> nos dice exactamente qué esperar de salida.</p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./contenidos\sesion2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_fundamentos_decoradores.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">2.3 Controlando el Flujo de Datos con Decoradores</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05_principios_solid.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">2.5 Diseño de Pipelines Escalables con SOLID</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-tabla-periodica-del-tipado-en-datos">1. La “Tabla Periódica” del Tipado en Datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-poder-de-las-dataclasses-objetos-de-configuracion">2. El Poder de las Dataclasses: Objetos de Configuración</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-hacemos-esto">¿Por qué hacemos esto?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#caso-practico-refactorizando-el-exploradordatos">3. Caso Práctico: Refactorizando el ExploradorDatos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo">Objetivo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-1-centralizar-la-configuracion-dataclasses">Paso 1: Centralizar la Configuración (Dataclasses)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-2-blindando-el-constructor-init">Paso 2: Blindando el Constructor (<code class="docutils literal notranslate"><span class="pre">__init__</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-3-tipado-en-metodos-de-visualizacion">Paso 3: Tipado en Métodos de Visualización</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-4-agregando-inteligencia-de-negocio">Paso 4: Agregando Inteligencia de Negocio</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado-final-como-usar-su-nueva-clase">Resultado Final: Cómo usar su nueva clase</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#que-hemos-ganado">¿Qué hemos ganado?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Maestría en Inteligencia de Negocios
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
+  <p>Universidad Externado de Colombia</p>
+</div>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

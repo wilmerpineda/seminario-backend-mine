@@ -27,3 +27,4 @@ html:
     <div>
       <p>Universidad Externado de Colombia</p>
     </div>
+  extra_path: ["assets_externos"]

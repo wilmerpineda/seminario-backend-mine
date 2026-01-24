@@ -1,4 +1,4 @@
-## 3.5 🧪 Taller Práctico: Blindando el SmartPortfolio (Tests + PR)
+## 🧪 Taller Práctico: Blindando el SmartPortfolio (Tests + PR)
 
 ### 🎯 Objetivo
 Implementar una suite de pruebas profesional para el proyecto **SmartPortfolio**, alcanzando:

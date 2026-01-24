@@ -1,4 +1,4 @@
-## 4. 🧪 Cómo pensar un test profesional (patrón AAA)
+# 🧪 Cómo pensar un test profesional (patrón AAA)
 
 Un test profesional —por simple que sea— sigue una **estructura mental clara**.  
 No se trata solo de “probar código”, sino de **validar una hipótesis de negocio**.
@@ -107,7 +107,7 @@ Para fortalecer esta batería de tests, lo natural sería añadir:
 Así es como se construyen tests profesionales, mantenibles y confiables.
 
 
-## 5. 🚀 Escalando tus tests en proyectos de BI y Data Science
+# 🚀 Escalando tus tests en proyectos de BI y Data Science
 
 Cuando tus proyectos de **Business Intelligence** crecen —ETLs complejos, múltiples fuentes de datos, modelos de *Machine Learning*— los tests simples ya no son suficientes.  
 Necesitas **herramientas más potentes**, pero también más elegantes.

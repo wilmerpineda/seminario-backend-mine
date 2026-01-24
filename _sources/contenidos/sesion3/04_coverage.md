@@ -1,4 +1,4 @@
-## 3.4 📊 Code Coverage: ¿qué tanto probamos realmente?
+## 📊 Code Coverage: ¿qué tanto probamos realmente?
 
 Escribiste **10 tests**. Genial 👏  
 Pero ahora viene la pregunta incómoda:

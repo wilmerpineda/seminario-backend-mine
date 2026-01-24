@@ -1,6 +1,6 @@
 # 🛡️ Ingeniería de Datos y Calidad: Guía de Testing Automatizado
 
-    **Para el estudiante de BI**: En el mundo de los datos, la confianza es la moneda de cambio. Un dashboard visualmente impactante no sirve de nada si los números subyacentes son incorrectos. El testing automatizado es tu póliza de seguro contra decisiones basadas en datos erróneos.
+**Para el estudiante de BI**: En el mundo de los datos, la confianza es la moneda de cambio. Un dashboard visualmente impactante no sirve de nada si los números subyacentes son incorrectos. El testing automatizado es tu póliza de seguro contra decisiones basadas en datos erróneos.
 
 ## 1. Fundamentos: La Filosofía del Testing en Negocios
 

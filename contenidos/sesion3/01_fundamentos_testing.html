@@ -1,0 +1,634 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>🛡️ Ingeniería de Datos y Calidad: Guía de Testing Automatizado &#8212; Seminario de Programación</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'contenidos/sesion3/01_fundamentos_testing';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4. 🧪 Cómo pensar un test profesional (patrón AAA)" href="02_fixtures_patron_aaa.html" />
+    <link rel="prev" title="2.6 Proyecto Integrador - SmartPortfolio 🚀" href="../sesion2/06_taller_practico.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo-uec.png" class="logo__image only-light" alt="Seminario de Programación - Home"/>
+    <script>document.write(`<img src="../../_static/logo-uec.png" class="logo__image only-dark" alt="Seminario de Programación - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Seminario de Programación: Backend para Ciencia de Datos
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 3 - Ingeniería de Software para Datos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/01_gestion_dependencias.html">1.1 Del Caos al Orden: Gestión de Dependencias con Poetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/02_estructura_proyecto.html">1.2 Anatomía de un Proyecto de Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/03_git_workflow.html">1.3 Flujo de Trabajo con Git en Equipos de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/04_guia_tecnica_adicional.html">1.4 Guía Técnica: Configuración de Entorno (Git + VS Code)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/05_taller_practico.html">1.5 Taller Práctico: El “Converter” Financiero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 3 - Programación Orientada a Objetos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/01_guia_poo.html">2.1 Guia Inicial para Programación Orientada a Objetos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/02_fundamentos_poo.html">2.2 Fundamentos de POO - La “Célula” del Dato</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/03_fundamentos_decoradores.html">2.3 Controlando el Flujo de Datos con Decoradores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/04_refactorizacion_hinting.html">2.4 Python Moderno - Tipado Estricto y Configuraciones Robustas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/05_principios_solid.html">2.5 Diseño de Pipelines Escalables con SOLID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/06_taller_practico.html">2.6 Proyecto Integrador - SmartPortfolio 🚀</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 3 - Testing</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">🛡️ Ingeniería de Datos y Calidad: Guía de Testing Automatizado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_fixtures_patron_aaa.html">4. 🧪 Cómo pensar un test profesional (patrón AAA)</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="03_mocking_errores.html">🧩 Testeando Clases y Manejo de Errores</a></li>
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="04_coverage.html">3.4 📊 Code Coverage: ¿qué tanto probamos realmente?</a></li>
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="05_taller_practico.html">3.5 🧪 Taller Práctico: Blindando el SmartPortfolio (Tests + PR)</a></li>
+
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/contenidos/sesion3/01_fundamentos_testing.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>🛡️ Ingeniería de Datos y Calidad: Guía de Testing Automatizado</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamentos-la-filosofia-del-testing-en-negocios">1. Fundamentos: La Filosofía del Testing en Negocios</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-ruidoso-loud-error">💥 Error Ruidoso (Loud Error)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-silencioso-silent-error-el-enemigo-del-bi">🐍 Error Silencioso (Silent Error) — El enemigo del BI</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estrategia-la-piramide-de-testing">2. Estrategia: La Pirámide de Testing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-base-unit-tests-pruebas-unitarias">🔻 La Base: Unit Tests (Pruebas Unitarias)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-centro-integration-tests-pruebas-de-integracion">🔸 El Centro: Integration Tests (Pruebas de Integración)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-cima-end-to-end-e2e">🔺 La Cima: End-to-End (E2E)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#herramienta-estandar-pytest">3. Herramienta Estándar: Pytest</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecucion-de-tests-con-pytest-usando-poetry">🧪 Ejecución de tests con Pytest (usando Poetry)</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="ingenieria-de-datos-y-calidad-guia-de-testing-automatizado">
+<h1>🛡️ Ingeniería de Datos y Calidad: Guía de Testing Automatizado<a class="headerlink" href="#ingenieria-de-datos-y-calidad-guia-de-testing-automatizado" title="Link to this heading">#</a></h1>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>**Para el estudiante de BI**: En el mundo de los datos, la confianza es la moneda de cambio. Un dashboard visualmente impactante no sirve de nada si los números subyacentes son incorrectos. El testing automatizado es tu póliza de seguro contra decisiones basadas en datos erróneos.
+</pre></div>
+</div>
+<section id="fundamentos-la-filosofia-del-testing-en-negocios">
+<h2>1. Fundamentos: La Filosofía del Testing en Negocios<a class="headerlink" href="#fundamentos-la-filosofia-del-testing-en-negocios" title="Link to this heading">#</a></h2>
+<p>¿Por qué un analista o ingeniero de datos debería escribir pruebas? En Ciencia de Datos e Inteligencia de Negocios, el objetivo principal es <em>mitigar riesgos financieros y reputacionales</em>.</p>
+<p>Imagina un error en tu código. Existen dos tipos:</p>
+<section id="error-ruidoso-loud-error">
+<h3>💥 Error Ruidoso (Loud Error)<a class="headerlink" href="#error-ruidoso-loud-error" title="Link to this heading">#</a></h3>
+<p>El programa falla inmediatamente.</p>
+<ul class="simple">
+<li><p>Ejemplo: Intentas dividir por cero o conectar a una base de datos con la contraseña incorrecta. El script se detiene y sale un error en rojo.</p></li>
+<li><p>Impacto: Bajo. Te das cuenta al instante y lo arreglas antes de entregar el reporte.</p></li>
+</ul>
+</section>
+<section id="error-silencioso-silent-error-el-enemigo-del-bi">
+<h3>🐍 Error Silencioso (Silent Error) — El enemigo del BI<a class="headerlink" href="#error-silencioso-silent-error-el-enemigo-del-bi" title="Link to this heading">#</a></h3>
+<p>La lógica es incorrecta, pero el código sigue corriendo sin quejarse.</p>
+<ul class="simple">
+<li><p>Ejemplo: Un cálculo de margen de ganancia usa el costo bruto en lugar del neto. El reporte muestra un ROI de 15% cuando la realidad es -2%.</p></li>
+<li><p>Impacto: Catastrófico. La gerencia toma decisiones de inversión basadas en una mentira. Nadie se da cuenta hasta meses después.</p></li>
+</ul>
+<p>Conclusión: El testing automatizado es la red de seguridad que atrapa estos errores silenciosos antes de que lleguen al Dashboard del CEO.</p>
+</section>
+</section>
+<section id="estrategia-la-piramide-de-testing">
+<h2>2. Estrategia: La Pirámide de Testing<a class="headerlink" href="#estrategia-la-piramide-de-testing" title="Link to this heading">#</a></h2>
+<p>No todos los tests tienen el mismo costo ni valor. En un proyecto de datos, debemos estructurarlos jerárquicamente:</p>
+<section id="la-base-unit-tests-pruebas-unitarias">
+<h3>🔻 La Base: Unit Tests (Pruebas Unitarias)<a class="headerlink" href="#la-base-unit-tests-pruebas-unitarias" title="Link to this heading">#</a></h3>
+<p>Son el cimiento de la pirámide y donde debes invertir el 70% de tu tiempo.</p>
+<ul class="simple">
+<li><p>¿Qué son? Prueban una sola pieza aislada de lógica (una función de limpieza, un cálculo de KPI).</p></li>
+<li><p>Ejemplo BI: Verificar que una función calcular_iva(monto) retorna exactamente el 19% o 21% según corresponda.</p></li>
+<li><p>Ventaja: Corren en milisegundos. Si algo falla, sabes exactamente en qué línea de código fue.</p></li>
+</ul>
+</section>
+<section id="el-centro-integration-tests-pruebas-de-integracion">
+<h3>🔸 El Centro: Integration Tests (Pruebas de Integración)<a class="headerlink" href="#el-centro-integration-tests-pruebas-de-integracion" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>¿Qué son? Verifican cómo interactúan dos piezas distintas o sistemas.</p></li>
+<li><p>Ejemplo BI: Tu script de Python toma datos, los transforma y los carga en una base de datos SQL. ¿Los tipos de datos coinciden? ¿Se cortaron los textos largos?</p></li>
+<li><p>Objetivo: Asegurar que las “tuberías” (pipelines) conectan bien.</p></li>
+</ul>
+</section>
+<section id="la-cima-end-to-end-e2e">
+<h3>🔺 La Cima: End-to-End (E2E)<a class="headerlink" href="#la-cima-end-to-end-e2e" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>¿Qué son? Simulan todo el flujo del dato, desde el archivo crudo (CSV/API) hasta el reporte final.</p></li>
+<li><p>Desventaja: Son lentos y difíciles de mantener. Úsalos con moderación para flujos críticos.</p></li>
+</ul>
+</section>
+</section>
+<section id="herramienta-estandar-pytest">
+<h2>3. Herramienta Estándar: Pytest<a class="headerlink" href="#herramienta-estandar-pytest" title="Link to this heading">#</a></h2>
+<p>Para implementar esto en Python (el lenguaje estándar en Data), utilizamos pytest. Es la herramienta favorita de la industria por ser limpia, directa y poderosa.</p>
+<p><strong>Configuración</strong></p>
+<p>Pytest actúa como un “sabueso”: busca automáticamente en tu proyecto cualquier archivo que empiece por test_ y ejecuta las funciones dentro que también empiecen por test_.</p>
+<section id="ejecucion-de-tests-con-pytest-usando-poetry">
+<h3>🧪 Ejecución de tests con Pytest (usando Poetry)<a class="headerlink" href="#ejecucion-de-tests-con-pytest-usando-poetry" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Comando</p></th>
+<th class="head"><p>Acción</p></th>
+<th class="head"><p>¿Cuándo usarlo? 🧠</p></th>
+<th class="head"><p>Ejemplo práctico 📌</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span></code></p></td>
+<td><p>Ejecuta <strong>todos los tests</strong> del proyecto.</p></td>
+<td><p>Antes de hacer un <em>commit</em> o <em>push</em> para validar que todo funciona.</p></td>
+<td><p>Verificar que el proyecto está estable antes de subir cambios.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">-v</span></code></p></td>
+<td><p>Modo <strong>verbose</strong>. Muestra qué test se ejecuta, pasa o falla.</p></td>
+<td><p>Cuando quieres entender el flujo de ejecución o revisar cobertura lógica.</p></td>
+<td><p>Identificar exactamente qué test falló en un pipeline CI.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">-x</span></code></p></td>
+<td><p>Detiene la ejecución <strong>al primer error</strong> encontrado.</p></td>
+<td><p>Ideal para <strong>debug</strong> cuando hay muchos fallos encadenados.</p></td>
+<td><p>Corregir un bug crítico sin ruido de otros errores.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./contenidos\sesion3"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../sesion2/06_taller_practico.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">2.6 Proyecto Integrador - SmartPortfolio 🚀</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02_fixtures_patron_aaa.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4. 🧪 Cómo pensar un test profesional (patrón AAA)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamentos-la-filosofia-del-testing-en-negocios">1. Fundamentos: La Filosofía del Testing en Negocios</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-ruidoso-loud-error">💥 Error Ruidoso (Loud Error)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-silencioso-silent-error-el-enemigo-del-bi">🐍 Error Silencioso (Silent Error) — El enemigo del BI</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estrategia-la-piramide-de-testing">2. Estrategia: La Pirámide de Testing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-base-unit-tests-pruebas-unitarias">🔻 La Base: Unit Tests (Pruebas Unitarias)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-centro-integration-tests-pruebas-de-integracion">🔸 El Centro: Integration Tests (Pruebas de Integración)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-cima-end-to-end-e2e">🔺 La Cima: End-to-End (E2E)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#herramienta-estandar-pytest">3. Herramienta Estándar: Pytest</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecucion-de-tests-con-pytest-usando-poetry">🧪 Ejecución de tests con Pytest (usando Poetry)</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Maestría en Inteligencia de Negocios
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
+  <p>Universidad Externado de Colombia</p>
+</div>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

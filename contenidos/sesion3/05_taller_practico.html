@@ -1,0 +1,769 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3.5 🧪 Taller Práctico: Blindando el SmartPortfolio (Tests + PR) &#8212; Seminario de Programación</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'contenidos/sesion3/05_taller_practico';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="3.4 📊 Code Coverage: ¿qué tanto probamos realmente?" href="04_coverage.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo-uec.png" class="logo__image only-light" alt="Seminario de Programación - Home"/>
+    <script>document.write(`<img src="../../_static/logo-uec.png" class="logo__image only-dark" alt="Seminario de Programación - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Seminario de Programación: Backend para Ciencia de Datos
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 3 - Ingeniería de Software para Datos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/01_gestion_dependencias.html">1.1 Del Caos al Orden: Gestión de Dependencias con Poetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/02_estructura_proyecto.html">1.2 Anatomía de un Proyecto de Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/03_git_workflow.html">1.3 Flujo de Trabajo con Git en Equipos de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/04_guia_tecnica_adicional.html">1.4 Guía Técnica: Configuración de Entorno (Git + VS Code)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/05_taller_practico.html">1.5 Taller Práctico: El “Converter” Financiero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 3 - Programación Orientada a Objetos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/01_guia_poo.html">2.1 Guia Inicial para Programación Orientada a Objetos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/02_fundamentos_poo.html">2.2 Fundamentos de POO - La “Célula” del Dato</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/03_fundamentos_decoradores.html">2.3 Controlando el Flujo de Datos con Decoradores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/04_refactorizacion_hinting.html">2.4 Python Moderno - Tipado Estricto y Configuraciones Robustas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/05_principios_solid.html">2.5 Diseño de Pipelines Escalables con SOLID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/06_taller_practico.html">2.6 Proyecto Integrador - SmartPortfolio 🚀</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 3 - Testing</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_fundamentos_testing.html">🛡️ Ingeniería de Datos y Calidad: Guía de Testing Automatizado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_fixtures_patron_aaa.html">4. 🧪 Cómo pensar un test profesional (patrón AAA)</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="03_mocking_errores.html">🧩 Testeando Clases y Manejo de Errores</a></li>
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="04_coverage.html">3.4 📊 Code Coverage: ¿qué tanto probamos realmente?</a></li>
+
+
+
+
+
+
+
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">3.5 🧪 Taller Práctico: Blindando el SmartPortfolio (Tests + PR)</a></li>
+
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/contenidos/sesion3/05_taller_practico.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>3.5 🧪 Taller Práctico: Blindando el SmartPortfolio (Tests + PR)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">3.5 🧪 Taller Práctico: Blindando el SmartPortfolio (Tests + PR)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo">🎯 Objetivo</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-del-repositorio-y-flujo-github">🧰 Contexto del repositorio y flujo GitHub</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#preparacion-del-entorno">1) 🧱 Preparación del entorno</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-rama-de-trabajo">1.1 Crear rama de trabajo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instalar-dependencias-de-testing">1.2 Instalar dependencias de testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-esperada">1.3 Estructura esperada</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#desarrollo-de-tests">2) 🧪 Desarrollo de tests</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-fixtures">A) 🛠️ Fixtures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-tests-de-logica-parametrizados">B) 🔄 Tests de lógica (parametrizados)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-validacion-de-errores-unhappy-path">C) 🚨 Validación de errores (Unhappy Path)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#reporte-de-coverage">3) 📊 Reporte de Coverage</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consola">3.1 Consola</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reporte-html">3.2 Reporte HTML</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#commits-y-pull-request">4) ✅ Commits y Pull Request</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#commits-sugeridos">Commits sugeridos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#publicar-rama">Publicar rama</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pull-request">Pull Request</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#checklist-de-calidad">✅ Checklist de calidad</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cierre">🧠 Cierre</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="taller-practico-blindando-el-smartportfolio-tests-pr">
+<h1>3.5 🧪 Taller Práctico: Blindando el SmartPortfolio (Tests + PR)<a class="headerlink" href="#taller-practico-blindando-el-smartportfolio-tests-pr" title="Link to this heading">#</a></h1>
+<section id="objetivo">
+<h2>🎯 Objetivo<a class="headerlink" href="#objetivo" title="Link to this heading">#</a></h2>
+<p>Implementar una suite de pruebas profesional para el proyecto <strong>SmartPortfolio</strong>, alcanzando:</p>
+<ul class="simple">
+<li><p>✅ <strong>≥ 90% de cobertura</strong> en el módulo de modelos</p></li>
+<li><p>✅ Uso obligatorio de:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">pytest.fixture</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&#64;pytest.mark.parametrize</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pytest.approx</span></code></p></li>
+</ul>
+</li>
+<li><p>✅ Entrega mediante <strong>Pull Request en GitHub</strong>, siguiendo buenas prácticas de commits</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="contexto-del-repositorio-y-flujo-github">
+<h1>🧰 Contexto del repositorio y flujo GitHub<a class="headerlink" href="#contexto-del-repositorio-y-flujo-github" title="Link to this heading">#</a></h1>
+<p>Este taller simula un flujo real de trabajo en equipo:</p>
+<ul class="simple">
+<li><p>Desarrollo en una <strong>rama feature</strong></p></li>
+<li><p><strong>Commits pequeños, claros y atómicos</strong></p></li>
+<li><p>Revisión mediante <strong>Pull Request</strong></p></li>
+<li><p>Validación con <strong>coverage</strong> y evidencia reproducible</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="preparacion-del-entorno">
+<h1>1) 🧱 Preparación del entorno<a class="headerlink" href="#preparacion-del-entorno" title="Link to this heading">#</a></h1>
+<section id="crear-rama-de-trabajo">
+<h2>1.1 Crear rama de trabajo<a class="headerlink" href="#crear-rama-de-trabajo" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>checkout<span class="w"> </span>main
+git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>main
+git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>feat/test-suite
+</pre></div>
+</div>
+</section>
+<section id="instalar-dependencias-de-testing">
+<h2>1.2 Instalar dependencias de testing<a class="headerlink" href="#instalar-dependencias-de-testing" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>add<span class="w"> </span>pytest<span class="w"> </span>pytest-cov<span class="w"> </span>--group<span class="w"> </span>dev
+</pre></div>
+</div>
+</section>
+<section id="estructura-esperada">
+<h2>1.3 Estructura esperada<a class="headerlink" href="#estructura-esperada" title="Link to this heading">#</a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>tests/
+  conftest.py
+  test_models.py
+</pre></div>
+</div>
+<hr class="docutils" />
+</section>
+</section>
+<section id="desarrollo-de-tests">
+<h1>2) 🧪 Desarrollo de tests<a class="headerlink" href="#desarrollo-de-tests" title="Link to this heading">#</a></h1>
+<section id="a-fixtures">
+<h2>A) 🛠️ Fixtures<a class="headerlink" href="#a-fixtures" title="Link to this heading">#</a></h2>
+<p>Definan fixtures para reutilizar objetos del dominio.</p>
+<p><strong>Requeridas:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">instrumento_test</span></code>: instrumento genérico (ej. TSLA, AAPL)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">portafolio_vacio</span></code>: portafolio sin posiciones</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># tests/conftest.py</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">instrumento_test</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Instrumento</span><span class="p">(</span><span class="n">ticker</span><span class="o">=</span><span class="s2">&quot;TSLA&quot;</span><span class="p">,</span> <span class="n">nombre</span><span class="o">=</span><span class="s2">&quot;Tesla&quot;</span><span class="p">)</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">portafolio_vacio</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Portafolio</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="b-tests-de-logica-parametrizados">
+<h2>B) 🔄 Tests de lógica (parametrizados)<a class="headerlink" href="#b-tests-de-logica-parametrizados" title="Link to this heading">#</a></h2>
+<p>La clase <code class="docutils literal notranslate"><span class="pre">Posicion</span></code> debe implementar un método como<br />
+<code class="docutils literal notranslate"><span class="pre">calcular_ganancia_no_realizada()</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># tests/test_models.py</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+    <span class="s2">&quot;precio_entrada, precio_actual, cantidad, esperado&quot;</span><span class="p">,</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_calculo_pnl</span><span class="p">(</span>
+    <span class="n">precio_entrada</span><span class="p">,</span>
+    <span class="n">precio_actual</span><span class="p">,</span>
+    <span class="n">cantidad</span><span class="p">,</span>
+    <span class="n">esperado</span><span class="p">,</span>
+    <span class="n">instrumento_test</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">posicion</span> <span class="o">=</span> <span class="n">Posicion</span><span class="p">(</span>
+        <span class="n">instrumento</span><span class="o">=</span><span class="n">instrumento_test</span><span class="p">,</span>
+        <span class="n">cantidad</span><span class="o">=</span><span class="n">cantidad</span><span class="p">,</span>
+        <span class="n">precio_entrada</span><span class="o">=</span><span class="n">precio_entrada</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">pnl</span> <span class="o">=</span> <span class="n">posicion</span><span class="o">.</span><span class="n">calcular_ganancia_no_realizada</span><span class="p">(</span>
+        <span class="n">precio_actual</span><span class="o">=</span><span class="n">precio_actual</span>
+    <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">pnl</span> <span class="o">==</span> <span class="n">pytest</span><span class="o">.</span><span class="n">approx</span><span class="p">(</span><span class="n">esperado</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="c-validacion-de-errores-unhappy-path">
+<h2>C) 🚨 Validación de errores (Unhappy Path)<a class="headerlink" href="#c-validacion-de-errores-unhappy-path" title="Link to this heading">#</a></h2>
+<p>Aseguren que <code class="docutils literal notranslate"><span class="pre">Portafolio</span></code> lance una excepción propia si se intenta
+remover un activo inexistente.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="k">def</span> <span class="nf">test_remover_activo_inexistente_lanza_error</span><span class="p">(</span><span class="n">portafolio_vacio</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">PosicionNoExisteError</span><span class="p">):</span>
+        <span class="n">portafolio_vacio</span><span class="o">.</span><span class="n">remover_posicion</span><span class="p">(</span><span class="n">ticker</span><span class="o">=</span><span class="s2">&quot;NFLX&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+</section>
+</section>
+<section id="reporte-de-coverage">
+<h1>3) 📊 Reporte de Coverage<a class="headerlink" href="#reporte-de-coverage" title="Link to this heading">#</a></h1>
+<section id="consola">
+<h2>3.1 Consola<a class="headerlink" href="#consola" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-v<span class="w"> </span>--cov<span class="o">=</span>src<span class="w"> </span>--cov-report<span class="o">=</span>term-missing
+</pre></div>
+</div>
+</section>
+<section id="reporte-html">
+<h2>3.2 Reporte HTML<a class="headerlink" href="#reporte-html" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--cov<span class="o">=</span>src<span class="w"> </span>--cov-report<span class="o">=</span>html
+</pre></div>
+</div>
+<p>Abrir:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>htmlcov/index.html
+</pre></div>
+</div>
+<p>Objetivo mínimo: <strong>≥ 90% de cobertura en models</strong>.</p>
+<hr class="docutils" />
+</section>
+</section>
+<section id="commits-y-pull-request">
+<h1>4) ✅ Commits y Pull Request<a class="headerlink" href="#commits-y-pull-request" title="Link to this heading">#</a></h1>
+<section id="commits-sugeridos">
+<h2>Commits sugeridos<a class="headerlink" href="#commits-sugeridos" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">test:</span> <span class="pre">add</span> <span class="pre">base</span> <span class="pre">fixtures</span> <span class="pre">for</span> <span class="pre">portfolio</span> <span class="pre">and</span> <span class="pre">instrument</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test:</span> <span class="pre">add</span> <span class="pre">parametrized</span> <span class="pre">PnL</span> <span class="pre">scenarios</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test:</span> <span class="pre">add</span> <span class="pre">unhappy</span> <span class="pre">path</span> <span class="pre">for</span> <span class="pre">missing</span> <span class="pre">position</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chore:</span> <span class="pre">raise</span> <span class="pre">models</span> <span class="pre">coverage</span> <span class="pre">above</span> <span class="pre">90%</span></code></p></li>
+</ol>
+</section>
+<section id="publicar-rama">
+<h2>Publicar rama<a class="headerlink" href="#publicar-rama" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>feat/test-suite
+</pre></div>
+</div>
+</section>
+<section id="pull-request">
+<h2>Pull Request<a class="headerlink" href="#pull-request" title="Link to this heading">#</a></h2>
+<p><strong>Título sugerido</strong><br />
+<code class="docutils literal notranslate"><span class="pre">feat(test):</span> <span class="pre">add</span> <span class="pre">pytest</span> <span class="pre">suite</span> <span class="pre">and</span> <span class="pre">coverage</span> <span class="pre">for</span> <span class="pre">models</span></code></p>
+<p>El PR debe incluir:</p>
+<ul class="simple">
+<li><p>Archivos de test nuevos</p></li>
+<li><p>Captura de <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">-v</span></code></p></li>
+<li><p>Captura de <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">--cov</span></code> con ≥ 90%</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="checklist-de-calidad">
+<h1>✅ Checklist de calidad<a class="headerlink" href="#checklist-de-calidad" title="Link to this heading">#</a></h1>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Uso de <code class="docutils literal notranslate"><span class="pre">pytest.fixture</span></code></p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Uso de <code class="docutils literal notranslate"><span class="pre">parametrize</span></code></p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Uso de <code class="docutils literal notranslate"><span class="pre">pytest.approx</span></code></p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Test de error con <code class="docutils literal notranslate"><span class="pre">pytest.raises</span></code></p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Asserts claros y semánticos</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Commits claros y atómicos</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Coverage ≥ 90%</p></li>
+</ul>
+<hr class="docutils" />
+<section id="cierre">
+<h2>🧠 Cierre<a class="headerlink" href="#cierre" title="Link to this heading">#</a></h2>
+<p>Este taller evalúa algo más que código:<br />
+evalúa <strong>disciplina profesional en testing</strong>, dominio del flujo GitHub
+y capacidad de proteger reglas de negocio con evidencia reproducible.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./contenidos\sesion3"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="04_coverage.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">3.4 📊 Code Coverage: ¿qué tanto probamos realmente?</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">3.5 🧪 Taller Práctico: Blindando el SmartPortfolio (Tests + PR)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo">🎯 Objetivo</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-del-repositorio-y-flujo-github">🧰 Contexto del repositorio y flujo GitHub</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#preparacion-del-entorno">1) 🧱 Preparación del entorno</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-rama-de-trabajo">1.1 Crear rama de trabajo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instalar-dependencias-de-testing">1.2 Instalar dependencias de testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-esperada">1.3 Estructura esperada</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#desarrollo-de-tests">2) 🧪 Desarrollo de tests</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-fixtures">A) 🛠️ Fixtures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-tests-de-logica-parametrizados">B) 🔄 Tests de lógica (parametrizados)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-validacion-de-errores-unhappy-path">C) 🚨 Validación de errores (Unhappy Path)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#reporte-de-coverage">3) 📊 Reporte de Coverage</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consola">3.1 Consola</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reporte-html">3.2 Reporte HTML</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#commits-y-pull-request">4) ✅ Commits y Pull Request</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#commits-sugeridos">Commits sugeridos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#publicar-rama">Publicar rama</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pull-request">Pull Request</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#checklist-de-calidad">✅ Checklist de calidad</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cierre">🧠 Cierre</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Maestría en Inteligencia de Negocios
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
+  <p>Universidad Externado de Colombia</p>
+</div>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

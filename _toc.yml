@@ -4,14 +4,14 @@ format: jb-book
 root: intro
 
 parts:
-  - caption: Sesión 1 - Ingeniería de Software para Datos
+  - caption: Sección 3 - Ingeniería de Software para Datos
     chapters:
     - file: contenidos/sesion1/01_gestion_dependencias
     - file: contenidos/sesion1/02_estructura_proyecto
     - file: contenidos/sesion1/03_git_workflow
     - file: contenidos/sesion1/04_guia_tecnica_adicional
     - file: contenidos/sesion1/05_taller_practico
-  - caption: Sesión 2 - Programación Orientada a Objetos
+  - caption: Sección 3 - Programación Orientada a Objetos
     chapters:
     - file: contenidos/sesion2/01_guia_poo
     - file: contenidos/sesion2/02_fundamentos_poo
@@ -19,3 +19,10 @@ parts:
     - file: contenidos/sesion2/04_refactorizacion_hinting
     - file: contenidos/sesion2/05_principios_solid
     - file: contenidos/sesion2/06_taller_practico
+  - caption: Sección 3 - Testing
+    chapters:
+    - file: contenidos/sesion3/01_fundamentos_testing
+    - file: contenidos/sesion3/02_fixtures_patron_aaa
+    - file: contenidos/sesion3/03_mocking_errores
+    - file: contenidos/sesion3/04_coverage
+    - file: contenidos/sesion3/05_taller_practico

@@ -14,7 +14,8 @@ logo: images/logo-uec.png
 # (útil si aún no tienes todos los kernels de Python instalados).
 # Cambia a 'auto' o 'force' cuando quieras que se ejecuten los notebooks.
 execute:
-  execute_notebooks: off
+  execute_notebooks: auto
+  timeout: 60
 
 # Opciones visuales adicionales
 html:
@@ -28,3 +29,15 @@ html:
       <p>Universidad Externado de Colombia</p>
     </div>
   extra_path: ["assets_externos"]
+
+sphinx:
+  extra_extensions:
+    - sphinxcontrib.mermaid
+
+parse:
+  myst_enable_extensions:
+    - colon_fence
+    - deflist
+    - dollarmath
+    - html_admonition
+    - html_image

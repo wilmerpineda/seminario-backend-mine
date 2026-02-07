@@ -26,3 +26,10 @@ parts:
     - file: contenidos/sesion3/03_mocking_errores
     - file: contenidos/sesion3/04_coverage
     - file: contenidos/sesion3/05_taller_practico
+  - caption: Sección 4 - Introducción a APIs
+    chapters:
+    - file: contenidos/sesion4/01_anatomia_api
+    - file: contenidos/sesion4/02_patron_repositorio
+    - file: contenidos/sesion4/03_providers_productivos
+    - file: contenidos/sesion4/04_ingestion_analitica
+    - file: contenidos/sesion4/05_objetos_inteligentes_oraculo

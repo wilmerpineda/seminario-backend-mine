@@ -33,3 +33,8 @@ parts:
     - file: contenidos/sesion4/03_providers_productivos
     - file: contenidos/sesion4/04_ingestion_analitica
     - file: contenidos/sesion4/05_objetos_inteligentes_oraculo
+  - caption: Sección 5 - Arquitectura Profesional y Analítica Cuantitativa
+    chapters:
+    - file: contenidos/sesion5/01_validacion_dominio_fuerte
+    - file: contenidos/sesion5/02_configuracion_secrets
+    - file: contenidos/sesion5/03_async_descarga_paralela

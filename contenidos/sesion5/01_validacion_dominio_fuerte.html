@@ -1,0 +1,1539 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5.1 🛡️ Blindando el Dominio: Validación y Modelos Confiables &#8212; Seminario de Programación</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}`;
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        all_mermaids.forEach((el) => {
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+        await mermaid.run();
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+const load = async () => {
+    initStyles();
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...JSON.parse(
+                    `{"startOnLoad": false}`
+                ),
+                ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...JSON.parse(
+        `{"startOnLoad": false}`
+    ),
+    ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+    }
+);
+
+window.addEventListener("load", load);</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'contenidos/sesion5/01_validacion_dominio_fuerte';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.2 🔐 Configuración Profesional y Gestión de Secretos" href="02_configuracion_secrets.html" />
+    <link rel="prev" title="4.5 🤖 Objetos Inteligentes: Integrando Machine Learning" href="../sesion4/05_objetos_inteligentes_oraculo.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo-uec.png" class="logo__image only-light" alt="Seminario de Programación - Home"/>
+    <script>document.write(`<img src="../../_static/logo-uec.png" class="logo__image only-dark" alt="Seminario de Programación - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Seminario de Programación: Backend para Ciencia de Datos
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 1 - Ingeniería de Software para Datos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/01_gestion_dependencias.html">1.1 Del Caos al Orden: Gestión de Dependencias con Poetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/02_estructura_proyecto.html">1.2 Anatomía de un Proyecto de Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/03_git_workflow.html">1.3 Flujo de Trabajo con Git en Equipos de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/04_guia_tecnica_adicional.html">1.4 Guía Técnica: Configuración de Entorno (Git + VS Code)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/05_taller_practico.html">1.5 Taller Práctico: El “Converter” Financiero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 2 - Programación Orientada a Objetos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/01_guia_poo.html">2.1 Guia Inicial para Programación Orientada a Objetos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/02_fundamentos_poo.html">2.2 Fundamentos de POO - La “Célula” del Dato</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/03_fundamentos_decoradores.html">2.3 Controlando el Flujo de Datos con Decoradores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/04_refactorizacion_hinting.html">2.4 Python Moderno - Tipado Estricto y Configuraciones Robustas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/05_principios_solid.html">2.5 Diseño de Pipelines Escalables con SOLID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/06_taller_practico.html">2.6 Proyecto Integrador - SmartPortfolio 🚀</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 3 - Testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion3/01_fundamentos_testing.html">🛡️ Ingeniería de Datos y Calidad: Guía de Testing Automatizado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion3/02_fixtures_patron_aaa.html">🧪 Cómo pensar un test profesional (patrón AAA)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../sesion3/03_mocking_errores.html">🧩 Testeando Clases y Manejo de Errores</a></li>
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../sesion3/04_coverage.html">📊 Code Coverage: ¿qué tanto probamos realmente?</a></li>
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../sesion3/05_taller_practico.html">🧪 Taller Práctico: Blindando el SmartPortfolio (Tests + PR)</a></li>
+
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 4 - Introducción a APIs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion4/01_anatomia_api.html">4.1 🌐 Anatomía de una API: El Lenguaje de Internet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion4/02_patron_repositorio.html">4.2 🏗️ Arquitectura de Datos: El Patrón Repositorio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion4/03_providers_productivos.html">4.3 🔐 Providers Productivos: Autenticación, Retries y Buenas Prácticas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion4/04_ingestion_analitica.html">4.4 📊 Ingestión Analítica: De API → JSON → DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion4/05_objetos_inteligentes_oraculo.html">4.5 🤖 Objetos Inteligentes: Integrando Machine Learning</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 5 - Arquitectura Profesional y Analítica Cuantitativa</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5.1 🛡️ Blindando el Dominio: Validación y Modelos Confiables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_configuracion_secrets.html">5.2 🔐 Configuración Profesional y Gestión de Secretos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_async_descarga_paralela.html">5.3 ⚡ Performance Real: Asincronismo y Descarga Paralela (Async)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/contenidos/sesion5/01_validacion_dominio_fuerte.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>5.1 🛡️ Blindando el Dominio: Validación y Modelos Confiables</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo">🎯 Objetivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#idea-central-el-dominio-protege-al-sistema">🧭 Idea central: El dominio protege al sistema</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-es-una-invariante">1) ¿Qué es una invariante?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#antipatron-primitive-obsession">2) Antipatrón: Primitive Obsession</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#value-objects-tipos-pequenos-con-reglas-grandes">3) Value Objects: tipos pequeños con reglas grandes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-ganamos-con-value-objects">✅ ¿Qué ganamos con Value Objects?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dominio-minimo-usando-value-objects">4) Dominio mínimo usando Value Objects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-validacion-parsing-serializacion-mentalidad-backend">5) Pydantic: validación + parsing + serialización (mentalidad backend)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instalacion-con-poetry">Instalación (con Poetry)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#donde-usar-pydantic-en-smartportfolio">¿Dónde usar Pydantic en SmartPortfolio?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convertir-dto-dominio-mapeo-explicito">Convertir DTO → Dominio (mapeo explícito)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manejo-explicito-de-errores">6) Manejo explícito de errores</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minicheatsheet-para-aplicar-en-smartportfolio">7) Mini‑Cheatsheet (para aplicar en SmartPortfolio)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reglas-recomendadas-minimas">✅ Reglas recomendadas (mínimas)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#patron-mental">🧠 Patrón mental</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cierre">🎯 Cierre</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="blindando-el-dominio-validacion-y-modelos-confiables">
+<h1>5.1 🛡️ Blindando el Dominio: Validación y Modelos Confiables<a class="headerlink" href="#blindando-el-dominio-validacion-y-modelos-confiables" title="Link to this heading">#</a></h1>
+<p>En un sistema real <strong>no se confía en el input</strong>.</p>
+<p>En analítica y BI esto aparece todos los días:</p>
+<ul class="simple">
+<li><p>Tickers vacíos (<code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>) o con espacios (<code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">AAPL</span> <span class="pre">&quot;</span></code>)</p></li>
+<li><p>Cantidades negativas o cero</p></li>
+<li><p>Precios con <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">NaN</span></code> o valores absurdos</p></li>
+<li><p>JSON externos incompletos o con tipos incorrectos</p></li>
+<li><p>Fechas con formatos inconsistentes</p></li>
+</ul>
+<p>Si tu dominio no valida, tu sistema termina con:</p>
+<ul class="simple">
+<li><p>Bugs silenciosos</p></li>
+<li><p>Resultados financieros incoherentes</p></li>
+<li><p>Tests frágiles</p></li>
+<li><p>Pipelines rotos</p></li>
+<li><p>Problemas de seguridad (inyección / abuso de endpoints)</p></li>
+</ul>
+<hr class="docutils" />
+<section id="objetivo">
+<h2>🎯 Objetivo<a class="headerlink" href="#objetivo" title="Link to this heading">#</a></h2>
+<p>Al final de esta sección podrás:</p>
+<ol class="arabic simple">
+<li><p>Definir <strong>invariantes del dominio</strong> (reglas que siempre deben cumplirse).</p></li>
+<li><p>Implementar <strong>Value Objects</strong> para evitar “primitivos sueltos”.</p></li>
+<li><p>Usar <strong>excepciones de dominio</strong> (errores explícitos, no <code class="docutils literal notranslate"><span class="pre">None</span></code> silenciosos).</p></li>
+<li><p>Aplicar validación con <strong>Pydantic</strong> (mentalidad backend) para parsing/serialización.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="idea-central-el-dominio-protege-al-sistema">
+<h2>🧭 Idea central: El dominio protege al sistema<a class="headerlink" href="#idea-central-el-dominio-protege-al-sistema" title="Link to this heading">#</a></h2>
+<pre  class="mermaid">
+        flowchart LR
+    A[Input externo: usuario / API / CSV] --&gt; B[Validación estricta]
+    B --&gt; C[Dominio: Instrumento / Posición / Portafolio]
+    C --&gt; D[Analítica: indicadores / Markowitz / ML]
+    D --&gt; E[Salida: reporte / recomendación / API]
+    </pre></section>
+<section id="que-es-una-invariante">
+<h2>1) ¿Qué es una invariante?<a class="headerlink" href="#que-es-una-invariante" title="Link to this heading">#</a></h2>
+<p>Una <strong>invariante</strong> es una condición que <strong>siempre</strong> debe ser cierta para que el dominio sea coherente.</p>
+<p>Ejemplos para SmartPortfolio:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Ticker</span></code> no vacío, sin espacios, en mayúsculas</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cantidad</span></code> &gt; 0</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Precio</span></code> ≥ 0</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Días</span> <span class="pre">futuros</span></code> &gt; 0 (no se predice al pasado)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Moneda</span></code> pertenece a un conjunto válido (opcional)</p></li>
+</ul>
+<p>Si rompes invariantes, el dominio entra en estados inválidos y luego “nadie sabe” por qué falla.</p>
+</section>
+<hr class="docutils" />
+<section id="antipatron-primitive-obsession">
+<h2>2) Antipatrón: Primitive Obsession<a class="headerlink" href="#antipatron-primitive-obsession" title="Link to this heading">#</a></h2>
+<p>Cuando el dominio usa <code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code> para todo, se vuelve fácil pasar valores inválidos:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ticker=&quot;</span>&#160;&#160; <span class="pre">&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cantidad=-10</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">precio=float(&quot;nan&quot;)</span></code></p></li>
+</ul>
+<p>Solución: <strong>Value Objects</strong>.</p>
+</section>
+<section id="value-objects-tipos-pequenos-con-reglas-grandes">
+<h2>3) Value Objects: tipos pequeños con reglas grandes<a class="headerlink" href="#value-objects-tipos-pequenos-con-reglas-grandes" title="Link to this heading">#</a></h2>
+<p>Un Value Object:</p>
+<ul class="simple">
+<li><p>Encapsula reglas (validación)</p></li>
+<li><p>Hace el código auto-documentado</p></li>
+<li><p>Previene errores por construcción</p></li>
+</ul>
+<pre  class="mermaid">
+        flowchart TD
+    A[str/int/float sueltos] --&gt;|riesgo| B[estados inválidos]
+    C[Value Objects] --&gt;|protección| D[estados válidos]
+    </pre><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+<span class="k">class</span> <span class="nc">DomainError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base exception for domain rule violations.&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">InvalidTickerError</span><span class="p">(</span><span class="n">DomainError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a ticker is empty/invalid.&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">InvalidQuantityError</span><span class="p">(</span><span class="n">DomainError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a quantity is not strictly positive.&quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">InvalidPriceError</span><span class="p">(</span><span class="n">DomainError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a price is negative, NaN, or not finite.&quot;&quot;&quot;</span>
+
+
+<span class="n">_TICKER_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[A-Z0-9.\-]+$&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Ticker</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ticker symbol value object.</span>
+
+<span class="sd">    Rules:</span>
+<span class="sd">    - Must be a non-empty string after stripping.</span>
+<span class="sd">    - Stored in uppercase.</span>
+<span class="sd">    - Must match allowed chars: A-Z, 0-9, &#39;.&#39;, &#39;-&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">raw</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidTickerError</span><span class="p">(</span><span class="s2">&quot;Ticker must be a non-empty string.&quot;</span><span class="p">)</span>
+
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_TICKER_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">norm</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">InvalidTickerError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ticker contains invalid characters: </span><span class="si">{</span><span class="n">raw</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">norm</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Quantity</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Quantity value object.</span>
+
+<span class="sd">    Rules:</span>
+<span class="sd">    - Must be int (bool not allowed).</span>
+<span class="sd">    - Must be strictly positive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">InvalidQuantityError</span><span class="p">(</span><span class="s2">&quot;Quantity must be an integer.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidQuantityError</span><span class="p">(</span><span class="s2">&quot;Quantity must be &gt; 0.&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Money</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Money value object (simple numeric wrapper).</span>
+
+<span class="sd">    Rules:</span>
+<span class="sd">    - Must be finite number.</span>
+<span class="sd">    - Must be &gt;= 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidPriceError</span><span class="p">(</span><span class="s2">&quot;Money must be numeric.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">InvalidPriceError</span><span class="p">(</span><span class="s2">&quot;Money must be finite (not NaN/inf).&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidPriceError</span><span class="p">(</span><span class="s2">&quot;Money must be &gt;= 0.&quot;</span><span class="p">)</span>
+
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="que-ganamos-con-value-objects">
+<h3>✅ ¿Qué ganamos con Value Objects?<a class="headerlink" href="#que-ganamos-con-value-objects" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Los errores aparecen <strong>cerca de donde nacen</strong></p></li>
+<li><p>El dominio queda “tipado” (aunque sea Python)</p></li>
+<li><p>La intención es clara (<code class="docutils literal notranslate"><span class="pre">Ticker(&quot;AAPL&quot;)</span></code> vs <code class="docutils literal notranslate"><span class="pre">&quot;AAPL&quot;</span></code>)</p></li>
+<li><p>Los tests se vuelven más simples</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="dominio-minimo-usando-value-objects">
+<h2>4) Dominio mínimo usando Value Objects<a class="headerlink" href="#dominio-minimo-usando-value-objects" title="Link to this heading">#</a></h2>
+<p>Ahora construimos objetos del dominio que <strong>solo aceptan estados válidos</strong>.</p>
+<pre  class="mermaid">
+        classDiagram
+    class Instrumento {
+        +Ticker ticker
+        +str nombre
+    }
+
+    class Posicion {
+        +Instrumento instrumento
+        +Quantity cantidad
+        +Money precio_entrada
+        +pnl_no_realizado(precio_actual)
+    }
+
+    Instrumento &quot;1&quot; --&gt; &quot;many&quot; Posicion
+    </pre><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Instrumento</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Minimal domain entity.&quot;&quot;&quot;</span>
+    <span class="n">ticker</span><span class="p">:</span> <span class="n">Ticker</span>
+    <span class="n">nombre</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Posicion</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Domain entity representing a holding.&quot;&quot;&quot;</span>
+    <span class="n">instrumento</span><span class="p">:</span> <span class="n">Instrumento</span>
+    <span class="n">cantidad</span><span class="p">:</span> <span class="n">Quantity</span>
+    <span class="n">precio_entrada</span><span class="p">:</span> <span class="n">Money</span>
+
+    <span class="k">def</span> <span class="nf">pnl_no_realizado</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precio_actual</span><span class="p">:</span> <span class="n">Money</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute unrealized PnL (profit and loss) for the position.</span>
+
+<span class="sd">        PnL = (precio_actual - precio_entrada) * cantidad</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">precio_actual</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">precio_entrada</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cantidad</span><span class="o">.</span><span class="n">value</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Small smoke-test / usage example.&quot;&quot;&quot;</span>
+    <span class="n">inst</span> <span class="o">=</span> <span class="n">Instrumento</span><span class="p">(</span><span class="n">ticker</span><span class="o">=</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;TSLA&quot;</span><span class="p">),</span> <span class="n">nombre</span><span class="o">=</span><span class="s2">&quot;Tesla Inc.&quot;</span><span class="p">)</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">Posicion</span><span class="p">(</span>
+        <span class="n">instrumento</span><span class="o">=</span><span class="n">inst</span><span class="p">,</span>
+        <span class="n">cantidad</span><span class="o">=</span><span class="n">Quantity</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+        <span class="n">precio_entrada</span><span class="o">=</span><span class="n">Money</span><span class="p">(</span><span class="mf">200.0</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">pnl</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">pnl_no_realizado</span><span class="p">(</span><span class="n">Money</span><span class="p">(</span><span class="mf">250.0</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PnL:&quot;</span><span class="p">,</span> <span class="n">pnl</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PnL: 150.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="pydantic-validacion-parsing-serializacion-mentalidad-backend">
+<h2>5) Pydantic: validación + parsing + serialización (mentalidad backend)<a class="headerlink" href="#pydantic-validacion-parsing-serializacion-mentalidad-backend" title="Link to this heading">#</a></h2>
+<p>En backend moderno, normalmente se usa un “schema” para validar inputs externos.</p>
+<p>Eso es exactamente lo que hace <strong>Pydantic</strong>:</p>
+<ul class="simple">
+<li><p>Convierte tipos (<code class="docutils literal notranslate"><span class="pre">&quot;10&quot;</span></code> → <code class="docutils literal notranslate"><span class="pre">10</span></code> cuando aplica)</p></li>
+<li><p>Aplica reglas (<code class="docutils literal notranslate"><span class="pre">min_length</span></code>, <code class="docutils literal notranslate"><span class="pre">gt</span></code>, etc.)</p></li>
+<li><p>Serializa a JSON de forma segura</p></li>
+</ul>
+<section id="instalacion-con-poetry">
+<h3>Instalación (con Poetry)<a class="headerlink" href="#instalacion-con-poetry" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>add<span class="w"> </span>pydantic
+</pre></div>
+</div>
+<blockquote>
+<div><p>Nota: El curso puede usar Pydantic v1 o v2. El ejemplo de abajo funciona en ambos.</p>
+</div></blockquote>
+</section>
+<section id="donde-usar-pydantic-en-smartportfolio">
+<h3>¿Dónde usar Pydantic en SmartPortfolio?<a class="headerlink" href="#donde-usar-pydantic-en-smartportfolio" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Entrada CLI / API (DTOs)</p></li>
+<li><p>Configuración (Settings)</p></li>
+<li><p>Parsing de respuestas JSON</p></li>
+<li><p>Serialización (guardar portafolio a JSON)</p></li>
+</ul>
+<p>Conceptualmente:</p>
+<pre  class="mermaid">
+        flowchart LR
+    A[Input externo] --&gt; B[Pydantic DTO]
+    B --&gt; C[Value Objects]
+    C --&gt; D[Dominio]
+    </pre><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># Pydantic v2</span>
+    <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">ValidationError</span><span class="p">,</span> <span class="n">field_validator</span>
+    <span class="n">PYDANTIC_V2</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="c1"># Pydantic v1</span>
+    <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">ValidationError</span><span class="p">,</span> <span class="n">validator</span>
+    <span class="n">PYDANTIC_V2</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<span class="k">class</span> <span class="nc">OrdenCompraDTO</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validated external input schema (DTO).</span>
+
+<span class="sd">    This model represents untrusted external input.</span>
+<span class="sd">    It should be converted into domain objects (Value Objects)</span>
+<span class="sd">    before entering the core domain.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ticker</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">min_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Ticker symbol (e.g., AAPL)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">cantidad</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Number of shares (&gt; 0)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">precio_entrada</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Entry price (&gt;= 0)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">nombre</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Optional display name&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># --- Normalization logic ---</span>
+    <span class="k">if</span> <span class="n">PYDANTIC_V2</span><span class="p">:</span>
+
+        <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;ticker&quot;</span><span class="p">)</span>
+        <span class="nd">@classmethod</span>
+        <span class="k">def</span> <span class="nf">normalize_ticker</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;ticker&quot;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">normalize_ticker</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
+
+<span class="c1"># Example usage</span>
+<span class="n">dto</span> <span class="o">=</span> <span class="n">OrdenCompraDTO</span><span class="p">(</span>
+    <span class="n">ticker</span><span class="o">=</span><span class="s2">&quot; aapl &quot;</span><span class="p">,</span>
+    <span class="n">cantidad</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">precio_entrada</span><span class="o">=</span><span class="mf">150.5</span><span class="p">,</span>
+    <span class="n">nombre</span><span class="o">=</span><span class="s2">&quot;Apple&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># v2 uses model_dump(), v1 uses dict()</span>
+<span class="n">dump</span> <span class="o">=</span> <span class="n">dto</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">dto</span><span class="p">,</span> <span class="s2">&quot;model_dump&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">dto</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">dump</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;ticker&#39;: &#39;AAPL&#39;, &#39;cantidad&#39;: 10, &#39;precio_entrada&#39;: 150.5, &#39;nombre&#39;: &#39;Apple&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="convertir-dto-dominio-mapeo-explicito">
+<h3>Convertir DTO → Dominio (mapeo explícito)<a class="headerlink" href="#convertir-dto-dominio-mapeo-explicito" title="Link to this heading">#</a></h3>
+<p>Muy importante: <strong>no mezcles</strong> DTO con dominio.</p>
+<ul class="simple">
+<li><p>DTO: admite “ensuciamiento” y conversión</p></li>
+<li><p>Dominio: debe estar limpio y coherente</p></li>
+</ul>
+<pre  class="mermaid">
+        sequenceDiagram
+    participant UI as CLI/API
+    participant DTO as Pydantic DTO
+    participant DOM as Dominio
+    UI-&gt;&gt;DTO: input raw
+    DTO--&gt;&gt;DOM: map to Value Objects
+    DOM--&gt;&gt;UI: result / error
+    </pre><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dto_a_posicion</span><span class="p">(</span><span class="n">dto</span><span class="p">:</span> <span class="n">OrdenCompraDTO</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Posicion</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Map a validated DTO into a domain object.</span>
+
+<span class="sd">    Important:</span>
+<span class="sd">    - DTO is already validated structurally (types, ranges).</span>
+<span class="sd">    - Domain objects enforce business invariants.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Create Value Objects explicitly</span>
+    <span class="n">ticker_vo</span><span class="p">:</span> <span class="n">Ticker</span> <span class="o">=</span> <span class="n">Ticker</span><span class="p">(</span><span class="n">dto</span><span class="o">.</span><span class="n">ticker</span><span class="p">)</span>
+    <span class="n">cantidad_vo</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">=</span> <span class="n">Quantity</span><span class="p">(</span><span class="n">dto</span><span class="o">.</span><span class="n">cantidad</span><span class="p">)</span>
+    <span class="n">precio_vo</span><span class="p">:</span> <span class="n">Money</span> <span class="o">=</span> <span class="n">Money</span><span class="p">(</span><span class="n">dto</span><span class="o">.</span><span class="n">precio_entrada</span><span class="p">)</span>
+
+    <span class="n">instrumento</span><span class="p">:</span> <span class="n">Instrumento</span> <span class="o">=</span> <span class="n">Instrumento</span><span class="p">(</span>
+        <span class="n">ticker</span><span class="o">=</span><span class="n">ticker_vo</span><span class="p">,</span>
+        <span class="n">nombre</span><span class="o">=</span><span class="n">dto</span><span class="o">.</span><span class="n">nombre</span> <span class="ow">or</span> <span class="n">ticker_vo</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Posicion</span><span class="p">(</span>
+        <span class="n">instrumento</span><span class="o">=</span><span class="n">instrumento</span><span class="p">,</span>
+        <span class="n">cantidad</span><span class="o">=</span><span class="n">cantidad_vo</span><span class="p">,</span>
+        <span class="n">precio_entrada</span><span class="o">=</span><span class="n">precio_vo</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="c1"># Example usage</span>
+<span class="n">pos2</span><span class="p">:</span> <span class="n">Posicion</span> <span class="o">=</span> <span class="n">dto_a_posicion</span><span class="p">(</span><span class="n">dto</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="n">pos2</span><span class="o">.</span><span class="n">instrumento</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+    <span class="n">pos2</span><span class="o">.</span><span class="n">cantidad</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+    <span class="n">pos2</span><span class="o">.</span><span class="n">precio_entrada</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AAPL 10 150.5
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="manejo-explicito-de-errores">
+<h2>6) Manejo explícito de errores<a class="headerlink" href="#manejo-explicito-de-errores" title="Link to this heading">#</a></h2>
+<p>En BI/DS es común “arreglar” datos con <code class="docutils literal notranslate"><span class="pre">try/except</span></code> genéricos o <code class="docutils literal notranslate"><span class="pre">fillna</span></code> indiscriminado.</p>
+<p>En sistemas, preferimos:</p>
+<ul class="simple">
+<li><p><strong>Fail fast</strong>: fallar temprano</p></li>
+<li><p><strong>Errores claros</strong>: con causa y contexto</p></li>
+<li><p>No producir resultados silenciosamente incorrectos</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
+
+
+<span class="k">def</span> <span class="nf">_short_pydantic_error</span><span class="p">(</span><span class="n">err</span><span class="p">:</span> <span class="n">ValidationError</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract a short, readable message from Pydantic ValidationError.</span>
+<span class="sd">    Works for both Pydantic v1 and v2.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># v2</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">errors</span><span class="p">()</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">errors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">loc</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">first</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;loc&quot;</span><span class="p">,</span> <span class="p">[]))</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">first</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;msg&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">loc</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">loc</span> <span class="k">else</span> <span class="n">msg</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="c1"># fallback</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="n">bad_inputs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;ticker&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;cantidad&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;precio_entrada&quot;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;ticker&quot;</span><span class="p">:</span> <span class="s2">&quot;MSFT&quot;</span><span class="p">,</span> <span class="s2">&quot;cantidad&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;precio_entrada&quot;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;ticker&quot;</span><span class="p">:</span> <span class="s2">&quot;MSFT&quot;</span><span class="p">,</span> <span class="s2">&quot;cantidad&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;precio_entrada&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;ticker&quot;</span><span class="p">:</span> <span class="s2">&quot;   &quot;</span><span class="p">,</span> <span class="s2">&quot;cantidad&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;precio_entrada&quot;</span><span class="p">:</span> <span class="mf">99.0</span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">payload</span> <span class="ow">in</span> <span class="n">bad_inputs</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dto_bad</span> <span class="o">=</span> <span class="n">OrdenCompraDTO</span><span class="p">(</span><span class="o">**</span><span class="n">payload</span><span class="p">)</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">dto_a_posicion</span><span class="p">(</span><span class="n">dto_bad</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ OK: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🟠 DTO validation error: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   ↳&quot;</span><span class="p">,</span> <span class="n">_short_pydantic_error</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">DomainError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🔴 Domain error: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   ↳&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>🟠 DTO validation error: {&#39;ticker&#39;: &#39;&#39;, &#39;cantidad&#39;: 1, &#39;precio_entrada&#39;: 10.0}
+   ↳ ticker: String should have at least 1 character
+🟠 DTO validation error: {&#39;ticker&#39;: &#39;MSFT&#39;, &#39;cantidad&#39;: 0, &#39;precio_entrada&#39;: 10.0}
+   ↳ cantidad: Input should be greater than 0
+🟠 DTO validation error: {&#39;ticker&#39;: &#39;MSFT&#39;, &#39;cantidad&#39;: 1, &#39;precio_entrada&#39;: -1.0}
+   ↳ precio_entrada: Input should be greater than or equal to 0
+🔴 Domain error: {&#39;ticker&#39;: &#39;   &#39;, &#39;cantidad&#39;: 5, &#39;precio_entrada&#39;: 99.0}
+   ↳ Ticker must be a non-empty string.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="minicheatsheet-para-aplicar-en-smartportfolio">
+<h2>7) Mini‑Cheatsheet (para aplicar en SmartPortfolio)<a class="headerlink" href="#minicheatsheet-para-aplicar-en-smartportfolio" title="Link to this heading">#</a></h2>
+<section id="reglas-recomendadas-minimas">
+<h3>✅ Reglas recomendadas (mínimas)<a class="headerlink" href="#reglas-recomendadas-minimas" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Ticker</span></code>: strip + uppercase + no vacío</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cantidad</span></code>: <code class="docutils literal notranslate"><span class="pre">int</span></code> y <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">0</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Precio</span></code>: <code class="docutils literal notranslate"><span class="pre">float</span></code> finito y <code class="docutils literal notranslate"><span class="pre">&gt;=</span> <span class="pre">0</span></code></p></li>
+<li><p>Excepciones propias (DomainError)</p></li>
+<li><p>DTOs (Pydantic) en la frontera del sistema (input/output)</p></li>
+<li><p>Value Objects dentro del dominio</p></li>
+</ul>
+</section>
+<section id="patron-mental">
+<h3>🧠 Patrón mental<a class="headerlink" href="#patron-mental" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>DTO valida “lo que llega”<br />
+Dominio valida “lo que existe”</p>
+</div></blockquote>
+</section>
+</section>
+<hr class="docutils" />
+<section id="cierre">
+<h2>🎯 Cierre<a class="headerlink" href="#cierre" title="Link to this heading">#</a></h2>
+<p>En esta sección movimos el sistema de:</p>
+<ul class="simple">
+<li><p>“Funciona si el usuario se porta bien”</p></li>
+</ul>
+<p>a</p>
+<ul class="simple">
+<li><p>“Funciona <strong>porque</strong> el dominio se protege”</p></li>
+</ul>
+<p>En 5.2 vamos a sacar secretos del código (configuración segura).<br />
+En 5.3 vamos a acelerar descargas masivas (async).</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./contenidos\sesion5"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../sesion4/05_objetos_inteligentes_oraculo.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">4.5 🤖 Objetos Inteligentes: Integrando Machine Learning</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02_configuracion_secrets.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">5.2 🔐 Configuración Profesional y Gestión de Secretos</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo">🎯 Objetivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#idea-central-el-dominio-protege-al-sistema">🧭 Idea central: El dominio protege al sistema</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-es-una-invariante">1) ¿Qué es una invariante?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#antipatron-primitive-obsession">2) Antipatrón: Primitive Obsession</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#value-objects-tipos-pequenos-con-reglas-grandes">3) Value Objects: tipos pequeños con reglas grandes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-ganamos-con-value-objects">✅ ¿Qué ganamos con Value Objects?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dominio-minimo-usando-value-objects">4) Dominio mínimo usando Value Objects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-validacion-parsing-serializacion-mentalidad-backend">5) Pydantic: validación + parsing + serialización (mentalidad backend)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instalacion-con-poetry">Instalación (con Poetry)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#donde-usar-pydantic-en-smartportfolio">¿Dónde usar Pydantic en SmartPortfolio?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convertir-dto-dominio-mapeo-explicito">Convertir DTO → Dominio (mapeo explícito)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manejo-explicito-de-errores">6) Manejo explícito de errores</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minicheatsheet-para-aplicar-en-smartportfolio">7) Mini‑Cheatsheet (para aplicar en SmartPortfolio)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reglas-recomendadas-minimas">✅ Reglas recomendadas (mínimas)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#patron-mental">🧠 Patrón mental</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cierre">🎯 Cierre</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Maestría en Inteligencia de Negocios
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
+  <p>Universidad Externado de Colombia</p>
+</div>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

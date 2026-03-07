@@ -1,0 +1,2077 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5.4 📈 Analítica Financiera: Retornos, Riesgo, Bollinger y Optimización de Portafolio &#8212; Seminario de Programación</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}`;
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        all_mermaids.forEach((el) => {
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+        await mermaid.run();
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+const load = async () => {
+    initStyles();
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...JSON.parse(
+                    `{"startOnLoad": false}`
+                ),
+                ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...JSON.parse(
+        `{"startOnLoad": false}`
+    ),
+    ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+    }
+);
+
+window.addEventListener("load", load);</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'contenidos/sesion5/04_analitica_financiera_extendida';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.5 🧩 Proyecto Integrador: SmartPortfolio Engine" href="05_smartportfolio_engine.html" />
+    <link rel="prev" title="5.3 ⚡ Performance Real: Asincronismo y Descarga Paralela (Async)" href="03_async_descarga_paralela.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo-uec.png" class="logo__image only-light" alt="Seminario de Programación - Home"/>
+    <script>document.write(`<img src="../../_static/logo-uec.png" class="logo__image only-dark" alt="Seminario de Programación - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Seminario de Programación: Backend para Ciencia de Datos
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 1 - Ingeniería de Software para Datos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/01_gestion_dependencias.html">1.1 Del Caos al Orden: Gestión de Dependencias con Poetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/02_estructura_proyecto.html">1.2 Anatomía de un Proyecto de Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/03_git_workflow.html">1.3 Flujo de Trabajo con Git en Equipos de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/04_guia_tecnica_adicional.html">1.4 Guía Técnica: Configuración de Entorno (Git + VS Code)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion1/05_taller_practico.html">1.5 Taller Práctico: El “Converter” Financiero</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 2 - Programación Orientada a Objetos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/01_guia_poo.html">2.1 Guia Inicial para Programación Orientada a Objetos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/02_fundamentos_poo.html">2.2 Fundamentos de POO - La “Célula” del Dato</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/03_fundamentos_decoradores.html">2.3 Controlando el Flujo de Datos con Decoradores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/04_refactorizacion_hinting.html">2.4 Python Moderno - Tipado Estricto y Configuraciones Robustas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/05_principios_solid.html">2.5 Diseño de Pipelines Escalables con SOLID</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion2/06_taller_practico.html">2.6 Proyecto Integrador - SmartPortfolio 🚀</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 3 - Testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion3/01_fundamentos_testing.html">🛡️ Ingeniería de Datos y Calidad: Guía de Testing Automatizado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion3/02_fixtures_patron_aaa.html">🧪 Cómo pensar un test profesional (patrón AAA)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../sesion3/03_mocking_errores.html">🧩 Testeando Clases y Manejo de Errores</a></li>
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../sesion3/04_coverage.html">📊 Code Coverage: ¿qué tanto probamos realmente?</a></li>
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../sesion3/05_taller_practico.html">🧪 Taller Práctico: Blindando el SmartPortfolio (Tests + PR)</a></li>
+
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 4 - Introducción a APIs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion4/01_anatomia_api.html">4.1 🌐 Anatomía de una API: El Lenguaje de Internet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion4/02_patron_repositorio.html">4.2 🏗️ Arquitectura de Datos: El Patrón Repositorio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion4/03_providers_productivos.html">4.3 🔐 Providers Productivos: Autenticación, Retries y Buenas Prácticas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion4/04_ingestion_analitica.html">4.4 📊 Ingestión Analítica: De API → JSON → DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sesion4/05_objetos_inteligentes_oraculo.html">4.5 🤖 Objetos Inteligentes: Integrando Machine Learning</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 5 - Arquitectura Profesional y Analítica Cuantitativa</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_validacion_dominio_fuerte.html">5.1 🛡️ Blindando el Dominio: Validación y Modelos Confiables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_configuracion_secrets.html">5.2 🔐 Configuración Profesional y Gestión de Secretos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_async_descarga_paralela.html">5.3 ⚡ Performance Real: Asincronismo y Descarga Paralela (Async)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5.4 📈 Analítica Financiera: Retornos, Riesgo, Bollinger y Optimización de Portafolio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_smartportfolio_engine.html">5.5 🧩 Proyecto Integrador: SmartPortfolio Engine</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sección 6 — FastAPI y Proyectos como servicios</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sesion6/01_introduccion_fastapi.html">6.1 🚀 Introducción a FastAPI: De Scripts a Servicios Web</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../sesion6/02_endpoints_pydantic_fastapi.html">6.2 🔌 Endpoints, Parámetros y Pydantic en FastAPI</a></li>
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/contenidos/sesion5/04_analitica_financiera_extendida.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>5.4 📈 Analítica Financiera: Retornos, Riesgo, Bollinger y Optimización de Portafolio</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo">🎯 Objetivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapa-mental">🧭 Mapa mental</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-no-trabajamos-directamente-con-precios">1) ¿Por qué no trabajamos directamente con precios?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-del-retorno-simple">Fórmula del retorno simple</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-de-analisis">2) Pipeline de análisis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulacion-de-precios">3) Simulación de precios</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-precios">4) Visualización de precios</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retornos">5) Retornos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retorno-esperado">6) Retorno esperado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#volatilidad-una-medida-basica-de-riesgo">7) Volatilidad: una medida básica de riesgo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-es-util">¿Por qué es útil?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matriz-de-covarianza">8) Matriz de covarianza</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#idea-clave">Idea clave</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bandas-de-bollinger">9) Bandas de Bollinger</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-sirven">¿Por qué sirven?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sharpe-ratio">10) Sharpe Ratio</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">¿Por qué es útil?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#teoria-de-markowitz-combinar-activos-para-optimizar-riesgo-y-retorno">11) Teoría de Markowitz: combinar activos para optimizar riesgo y retorno</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#componentes">Componentes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulas">Fórmulas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#idea-central">Idea central</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulacion-monte-carlo-de-portafolios">12) Simulación Monte Carlo de portafolios</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frontera-eficiente-aproximacion-visual">13) Frontera eficiente (aproximación visual)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-portafolio-fue-mejor-segun-sharpe">14) ¿Qué portafolio fue mejor según Sharpe?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#portafolio-de-minima-volatilidad">15) Portafolio de mínima volatilidad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-rapida-entre-portafolios-relevantes">16) Comparación rápida entre portafolios relevantes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-conecta-esto-con-smartportfolio">17) ¿Cómo conecta esto con SmartPortfolio?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ideas-clave-que-deben-quedar">18) Ideas clave que deben quedar</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sobre-retornos">Sobre retornos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sobre-volatilidad">Sobre volatilidad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sobre-bollinger">Sobre Bollinger</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sobre-sharpe">Sobre Sharpe</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sobre-markowitz">Sobre Markowitz</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cierre">🎯 Cierre</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="analitica-financiera-retornos-riesgo-bollinger-y-optimizacion-de-portafolio">
+<h1>5.4 📈 Analítica Financiera: Retornos, Riesgo, Bollinger y Optimización de Portafolio<a class="headerlink" href="#analitica-financiera-retornos-riesgo-bollinger-y-optimizacion-de-portafolio" title="Link to this heading">#</a></h1>
+<p>En este notebook conectamos todo lo que hemos construido hasta ahora:</p>
+<ul class="simple">
+<li><p>Descarga paralela de datos</p></li>
+<li><p>Transformación a <code class="docutils literal notranslate"><span class="pre">pandas</span></code></p></li>
+<li><p>Cálculo de retornos</p></li>
+<li><p>Volatilidad</p></li>
+<li><p>Bandas de Bollinger</p></li>
+<li><p>Sharpe ratio</p></li>
+<li><p>Optimización de portafolio con Markowitz</p></li>
+<li><p>Frontera eficiente</p></li>
+</ul>
+<p>La idea no es solo mostrar código, sino entender <strong>por qué estas métricas son útiles</strong> en un sistema como <strong>SmartPortfolio</strong>.</p>
+<hr class="docutils" />
+<section id="objetivo">
+<h2>🎯 Objetivo<a class="headerlink" href="#objetivo" title="Link to this heading">#</a></h2>
+<p>Al finalizar este notebook podrás:</p>
+<ol class="arabic simple">
+<li><p>Entender cómo pasar de precios a retornos.</p></li>
+<li><p>Interpretar el riesgo de un activo o de un portafolio.</p></li>
+<li><p>Construir Bandas de Bollinger y leerlas correctamente.</p></li>
+<li><p>Calcular el <strong>Sharpe ratio</strong> como medida de retorno ajustado por riesgo.</p></li>
+<li><p>Entender la lógica de <strong>Markowitz</strong> para combinar activos.</p></li>
+<li><p>Visualizar una aproximación a la <strong>frontera eficiente</strong>.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="mapa-mental">
+<h2>🧭 Mapa mental<a class="headerlink" href="#mapa-mental" title="Link to this heading">#</a></h2>
+<pre  class="mermaid">
+        flowchart LR
+    A[Datos de precios] --&gt; B[Retornos]
+    B --&gt; C[Riesgo / volatilidad]
+    C --&gt; D[Indicadores tecnicos]
+    C --&gt; E[Metricas de portafolio]
+    E --&gt; F[Markowitz]
+    F --&gt; G[Frontera eficiente]
+    G --&gt; H[Decision de inversion]
+    </pre></section>
+<section id="por-que-no-trabajamos-directamente-con-precios">
+<h2>1) ¿Por qué no trabajamos directamente con precios?<a class="headerlink" href="#por-que-no-trabajamos-directamente-con-precios" title="Link to this heading">#</a></h2>
+<p>El precio por sí solo dice poco sobre desempeño relativo.</p>
+<p>Ejemplo:</p>
+<ul class="simple">
+<li><p>Un activo puede pasar de 10 a 12</p></li>
+<li><p>Otro puede pasar de 100 a 102</p></li>
+</ul>
+<p>Ambos subieron <strong>2 unidades</strong>, pero no tuvieron el mismo desempeño porcentual.</p>
+<p>Por eso en finanzas cuantitativas se trabaja con <strong>retornos</strong>.</p>
+<section id="formula-del-retorno-simple">
+<h3>Fórmula del retorno simple<a class="headerlink" href="#formula-del-retorno-simple" title="Link to this heading">#</a></h3>
+<p>[
+R_t = \frac{P_t - P_{t-1}}{P_{t-1}}
+]</p>
+<p>Los retornos son útiles porque:</p>
+<ul class="simple">
+<li><p>hacen comparables activos con escalas distintas,</p></li>
+<li><p>permiten medir riesgo,</p></li>
+<li><p>sirven como base para optimización de portafolios,</p></li>
+<li><p>conectan con modelos estadísticos y de machine learning.</p></li>
+</ul>
+</section>
+</section>
+<section id="pipeline-de-analisis">
+<h2>2) Pipeline de análisis<a class="headerlink" href="#pipeline-de-analisis" title="Link to this heading">#</a></h2>
+<pre  class="mermaid">
+        flowchart LR
+    A[Prices] --&gt; B[Returns]
+    B --&gt; C[Volatility]
+    B --&gt; D[Sharpe Ratio]
+    A --&gt; E[Bollinger Bands]
+    B --&gt; F[Covariance Matrix]
+    F --&gt; G[Portfolio Optimization]
+    G --&gt; H[Efficient Frontier]
+    </pre><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="simulacion-de-precios">
+<h2>3) Simulación de precios<a class="headerlink" href="#simulacion-de-precios" title="Link to this heading">#</a></h2>
+<p>Para que el notebook sea reproducible, generamos una base sintética de precios.
+En producción, estos datos vendrían de un provider como:</p>
+<ul class="simple">
+<li><p>Yahoo Finance</p></li>
+<li><p>Alpha Vantage</p></li>
+<li><p>Polygon</p></li>
+<li><p>Binance</p></li>
+</ul>
+<p>La simulación nos permite enfocarnos en los conceptos sin depender de internet.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tickers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="s2">&quot;MSFT&quot;</span><span class="p">,</span> <span class="s2">&quot;NVDA&quot;</span><span class="p">,</span> <span class="s2">&quot;TSLA&quot;</span><span class="p">,</span> <span class="s2">&quot;AMZN&quot;</span><span class="p">]</span>
+<span class="n">days</span> <span class="o">=</span> <span class="mi">252</span>  <span class="c1"># ~1 año bursátil</span>
+
+<span class="n">prices</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="n">ticker</span><span class="p">:</span> <span class="mi">100</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">days</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">ticker</span> <span class="ow">in</span> <span class="n">tickers</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">prices</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AAPL</th>
+      <th>MSFT</th>
+      <th>NVDA</th>
+      <th>TSLA</th>
+      <th>AMZN</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>100.696057</td>
+      <td>102.646587</td>
+      <td>99.319229</td>
+      <td>100.691981</td>
+      <td>101.359463</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>100.630140</td>
+      <td>103.985546</td>
+      <td>98.834678</td>
+      <td>101.013785</td>
+      <td>100.817181</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>101.507366</td>
+      <td>102.262302</td>
+      <td>98.223806</td>
+      <td>100.083755</td>
+      <td>102.498054</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>103.435002</td>
+      <td>101.781221</td>
+      <td>97.287017</td>
+      <td>101.024127</td>
+      <td>102.835173</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>103.254018</td>
+      <td>103.401514</td>
+      <td>97.445243</td>
+      <td>100.433362</td>
+      <td>105.425486</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="visualizacion-de-precios">
+<h2>4) Visualización de precios<a class="headerlink" href="#visualizacion-de-precios" title="Link to this heading">#</a></h2>
+<p>Esta gráfica muestra trayectorias simuladas de precios.</p>
+<p>No debes leerla como una predicción real, sino como una forma de construir un caso de estudio
+sobre el cual calcular métricas cuantitativas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">prices</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">prices</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">prices</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Simulated Price Series&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Price&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8eb91b9c713ad2dd63c0d3680840f429320ef45c1b7ae6074b9445687f31b3e3.png" src="../../_images/8eb91b9c713ad2dd63c0d3680840f429320ef45c1b7ae6074b9445687f31b3e3.png" />
+</div>
+</div>
+</section>
+<section id="retornos">
+<h2>5) Retornos<a class="headerlink" href="#retornos" title="Link to this heading">#</a></h2>
+<p>Una vez tenemos precios, el siguiente paso es calcular retornos.</p>
+<p>Esto transforma el problema de:</p>
+<blockquote>
+<div><p>“¿cuánto vale hoy?”</p>
+</div></blockquote>
+<p>en:</p>
+<blockquote>
+<div><p>“¿cómo cambia su valor en el tiempo?”</p>
+</div></blockquote>
+<p>Ese cambio de enfoque es fundamental para riesgo y optimización.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">returns</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">returns</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AAPL</th>
+      <th>MSFT</th>
+      <th>NVDA</th>
+      <th>TSLA</th>
+      <th>AMZN</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>-0.000655</td>
+      <td>0.013044</td>
+      <td>-0.004879</td>
+      <td>0.003196</td>
+      <td>-0.005350</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.008717</td>
+      <td>-0.016572</td>
+      <td>-0.006181</td>
+      <td>-0.009207</td>
+      <td>0.016672</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.018990</td>
+      <td>-0.004704</td>
+      <td>-0.009537</td>
+      <td>0.009396</td>
+      <td>0.003289</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-0.001750</td>
+      <td>0.015919</td>
+      <td>0.001626</td>
+      <td>-0.005848</td>
+      <td>0.025189</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>-0.001753</td>
+      <td>-0.007246</td>
+      <td>-0.009207</td>
+      <td>0.002453</td>
+      <td>-0.006896</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="retorno-esperado">
+<h2>6) Retorno esperado<a class="headerlink" href="#retorno-esperado" title="Link to this heading">#</a></h2>
+<p>Una forma simple de resumir el comportamiento promedio de un activo es su retorno medio.</p>
+<p>En práctica suele anualizarse multiplicando por 252 días bursátiles.</p>
+<p>[
+\mu = E[R]
+]</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_returns</span> <span class="o">=</span> <span class="n">returns</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">252</span>
+<span class="n">mean_returns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AAPL    0.225116
+MSFT    0.271860
+NVDA    0.045076
+TSLA    0.537224
+AMZN    0.434313
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="volatilidad-una-medida-basica-de-riesgo">
+<h2>7) Volatilidad: una medida básica de riesgo<a class="headerlink" href="#volatilidad-una-medida-basica-de-riesgo" title="Link to this heading">#</a></h2>
+<p>La volatilidad mide qué tanto fluctúan los retornos.</p>
+<p>Cuanto más dispersos sean los retornos, mayor incertidumbre.</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma = \text{std}(R)
+\]</div>
+<p>Al anualizar:</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma_{anual} = \sigma_{diaria} \sqrt{252}
+\]</div>
+<section id="por-que-es-util">
+<h3>¿Por qué es útil?<a class="headerlink" href="#por-que-es-util" title="Link to this heading">#</a></h3>
+<p>Porque dos activos con el mismo retorno esperado no necesariamente tienen el mismo riesgo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">volatility</span> <span class="o">=</span> <span class="n">returns</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">252</span><span class="p">)</span>
+<span class="n">volatility</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AAPL    0.176791
+MSFT    0.160625
+NVDA    0.192870
+TSLA    0.133326
+AMZN    0.151194
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="matriz-de-covarianza">
+<h2>8) Matriz de covarianza<a class="headerlink" href="#matriz-de-covarianza" title="Link to this heading">#</a></h2>
+<p>Para construir portafolios no basta con medir el riesgo individual de cada activo.</p>
+<p>También importa <strong>cómo se mueven entre sí</strong>.</p>
+<p>La matriz de covarianza captura eso.</p>
+<section id="idea-clave">
+<h3>Idea clave<a class="headerlink" href="#idea-clave" title="Link to this heading">#</a></h3>
+<p>Si dos activos no se mueven exactamente igual, combinarlos puede reducir riesgo.</p>
+<p>Ese es el corazón de la teoría moderna de portafolio.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cov_matrix</span> <span class="o">=</span> <span class="n">returns</span><span class="o">.</span><span class="n">cov</span><span class="p">()</span> <span class="o">*</span> <span class="mi">252</span>
+<span class="n">cov_matrix</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AAPL</th>
+      <th>MSFT</th>
+      <th>NVDA</th>
+      <th>TSLA</th>
+      <th>AMZN</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AAPL</th>
+      <td>0.031255</td>
+      <td>0.000814</td>
+      <td>0.002767</td>
+      <td>0.000391</td>
+      <td>0.002417</td>
+    </tr>
+    <tr>
+      <th>MSFT</th>
+      <td>0.000814</td>
+      <td>0.025800</td>
+      <td>-0.003033</td>
+      <td>0.000444</td>
+      <td>0.000424</td>
+    </tr>
+    <tr>
+      <th>NVDA</th>
+      <td>0.002767</td>
+      <td>-0.003033</td>
+      <td>0.037199</td>
+      <td>0.000712</td>
+      <td>0.001842</td>
+    </tr>
+    <tr>
+      <th>TSLA</th>
+      <td>0.000391</td>
+      <td>0.000444</td>
+      <td>0.000712</td>
+      <td>0.017776</td>
+      <td>0.000176</td>
+    </tr>
+    <tr>
+      <th>AMZN</th>
+      <td>0.002417</td>
+      <td>0.000424</td>
+      <td>0.001842</td>
+      <td>0.000176</td>
+      <td>0.022860</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="bandas-de-bollinger">
+<h2>9) Bandas de Bollinger<a class="headerlink" href="#bandas-de-bollinger" title="Link to this heading">#</a></h2>
+<p>Las Bandas de Bollinger combinan:</p>
+<ul class="simple">
+<li><p>una media móvil,</p></li>
+<li><p>una medida local de volatilidad.</p></li>
+</ul>
+<p>Se usan para observar si el precio está relativamente “alto” o “bajo”
+respecto a su comportamiento reciente.</p>
+<div class="math notranslate nohighlight">
+\[
+Upper = MA + 2\sigma
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+Lower = MA - 2\sigma
+\]</div>
+<section id="por-que-sirven">
+<h3>¿Por qué sirven?<a class="headerlink" href="#por-que-sirven" title="Link to this heading">#</a></h3>
+<p>No “predicen el futuro”, pero ayudan a contextualizar el precio actual
+frente a su variabilidad reciente.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ticker</span> <span class="o">=</span> <span class="s2">&quot;AAPL&quot;</span>
+<span class="n">window</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="n">ma</span> <span class="o">=</span> <span class="n">prices</span><span class="p">[</span><span class="n">ticker</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">std</span> <span class="o">=</span> <span class="n">prices</span><span class="p">[</span><span class="n">ticker</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+<span class="n">upper</span> <span class="o">=</span> <span class="n">ma</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">std</span>
+<span class="n">lower</span> <span class="o">=</span> <span class="n">ma</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">std</span>
+
+<span class="n">bollinger_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">prices</span><span class="p">[</span><span class="n">ticker</span><span class="p">],</span>
+        <span class="s2">&quot;ma&quot;</span><span class="p">:</span> <span class="n">ma</span><span class="p">,</span>
+        <span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="n">upper</span><span class="p">,</span>
+        <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="n">lower</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">bollinger_df</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>price</th>
+      <th>ma</th>
+      <th>upper</th>
+      <th>lower</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>247</th>
+      <td>121.468606</td>
+      <td>122.586790</td>
+      <td>124.524319</td>
+      <td>120.649260</td>
+    </tr>
+    <tr>
+      <th>248</th>
+      <td>123.687151</td>
+      <td>122.702111</td>
+      <td>124.611744</td>
+      <td>120.792477</td>
+    </tr>
+    <tr>
+      <th>249</th>
+      <td>124.273129</td>
+      <td>122.800955</td>
+      <td>124.823449</td>
+      <td>120.778460</td>
+    </tr>
+    <tr>
+      <th>250</th>
+      <td>122.860068</td>
+      <td>122.867968</td>
+      <td>124.798451</td>
+      <td>120.937484</td>
+    </tr>
+    <tr>
+      <th>251</th>
+      <td>124.061502</td>
+      <td>122.977065</td>
+      <td>124.918940</td>
+      <td>121.035190</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bollinger_df</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Price&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bollinger_df</span><span class="p">[</span><span class="s2">&quot;ma&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;MA20&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bollinger_df</span><span class="p">[</span><span class="s2">&quot;upper&quot;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upper Band&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bollinger_df</span><span class="p">[</span><span class="s2">&quot;lower&quot;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Lower Band&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bollinger Bands - </span><span class="si">{</span><span class="n">ticker</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Price&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/6abdbe38a145dc4d2be65ff46ef83fdaab1b70c6148b800ed6d999ba07952dca.png" src="../../_images/6abdbe38a145dc4d2be65ff46ef83fdaab1b70c6148b800ed6d999ba07952dca.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="sharpe-ratio">
+<h2>10) Sharpe Ratio<a class="headerlink" href="#sharpe-ratio" title="Link to this heading">#</a></h2>
+<p>El Sharpe ratio resume cuánto retorno obtienes por unidad de riesgo.</p>
+<div class="math notranslate nohighlight">
+\[
+Sharpe = \frac{E[R_p] - R_f}{\sigma_p}
+\]</div>
+<p>donde:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(E[R_p]\)</span>: retorno esperado del portafolio</p></li>
+<li><p><span class="math notranslate nohighlight">\(R_f\)</span>: tasa libre de riesgo</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma_p\)</span>: volatilidad del portafolio</p></li>
+</ul>
+<section id="id1">
+<h3>¿Por qué es útil?<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Porque no basta con decir “este portafolio retorna más”.
+También importa <strong>cuánto riesgo asumió</strong> para lograrlo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">risk_free_rate</span> <span class="o">=</span> <span class="mf">0.02</span>  <span class="c1"># 2% anual, valor de ejemplo</span>
+
+<span class="n">weights_equal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">tickers</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">tickers</span><span class="p">))</span>
+
+<span class="n">portfolio_return_equal</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">weights_equal</span><span class="p">,</span> <span class="n">mean_returns</span><span class="p">))</span>
+<span class="n">portfolio_vol_equal</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">weights_equal</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">cov_matrix</span><span class="o">.</span><span class="n">values</span> <span class="o">@</span> <span class="n">weights_equal</span><span class="p">))</span>
+<span class="n">portfolio_sharpe_equal</span> <span class="o">=</span> <span class="p">(</span><span class="n">portfolio_return_equal</span> <span class="o">-</span> <span class="n">risk_free_rate</span><span class="p">)</span> <span class="o">/</span> <span class="n">portfolio_vol_equal</span>
+
+<span class="n">portfolio_return_equal</span><span class="p">,</span> <span class="n">portfolio_vol_equal</span><span class="p">,</span> <span class="n">portfolio_sharpe_equal</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.30271777718454534, 0.077148926666136, 3.6645717497537444)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="teoria-de-markowitz-combinar-activos-para-optimizar-riesgo-y-retorno">
+<h2>11) Teoría de Markowitz: combinar activos para optimizar riesgo y retorno<a class="headerlink" href="#teoria-de-markowitz-combinar-activos-para-optimizar-riesgo-y-retorno" title="Link to this heading">#</a></h2>
+<p>Harry Markowitz formalizó una idea poderosa:</p>
+<blockquote>
+<div><p>un portafolio debe evaluarse como conjunto, no como suma aislada de activos.</p>
+</div></blockquote>
+<section id="componentes">
+<h3>Componentes<a class="headerlink" href="#componentes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Vector de retornos esperados: <span class="math notranslate nohighlight">\(\mu\)</span></p></li>
+<li><p>Matriz de covarianza: <span class="math notranslate nohighlight">\(\Sigma\)</span></p></li>
+<li><p>Pesos del portafolio: <span class="math notranslate nohighlight">\(w\)</span></p></li>
+</ul>
+</section>
+<section id="formulas">
+<h3>Fórmulas<a class="headerlink" href="#formulas" title="Link to this heading">#</a></h3>
+<p>Retorno esperado del portafolio:</p>
+<div class="math notranslate nohighlight">
+\[
+E[R_p] = w^T \mu
+\]</div>
+<p>Varianza del portafolio:</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma_p^2 = w^T \Sigma w
+\]</div>
+<p>Volatilidad del portafolio:</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma_p = \sqrt{w^T \Sigma w}
+\]</div>
+</section>
+<section id="idea-central">
+<h3>Idea central<a class="headerlink" href="#idea-central" title="Link to this heading">#</a></h3>
+<p>La diversificación no consiste solo en “comprar varias cosas”.
+Consiste en combinar activos con comportamientos distintos.</p>
+</section>
+</section>
+<section id="simulacion-monte-carlo-de-portafolios">
+<h2>12) Simulación Monte Carlo de portafolios<a class="headerlink" href="#simulacion-monte-carlo-de-portafolios" title="Link to this heading">#</a></h2>
+<p>En lugar de resolver el problema con optimización exacta desde el inicio,
+vamos a generar muchos portafolios aleatorios.</p>
+<p>Esto permite:</p>
+<ul class="simple">
+<li><p>visualizar el espacio riesgo-retorno,</p></li>
+<li><p>identificar portafolios interesantes,</p></li>
+<li><p>introducir de forma intuitiva la frontera eficiente.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_portfolios</span> <span class="o">=</span> <span class="mi">5000</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">weights_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_portfolios</span><span class="p">):</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tickers</span><span class="p">))</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">/</span> <span class="n">weights</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="n">port_return</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">mean_returns</span><span class="p">))</span>
+    <span class="n">port_vol</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">cov_matrix</span><span class="o">.</span><span class="n">values</span> <span class="o">@</span> <span class="n">weights</span><span class="p">))</span>
+    <span class="n">port_sharpe</span> <span class="o">=</span> <span class="p">(</span><span class="n">port_return</span> <span class="o">-</span> <span class="n">risk_free_rate</span><span class="p">)</span> <span class="o">/</span> <span class="n">port_vol</span>
+
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">port_return</span><span class="p">,</span> <span class="n">port_vol</span><span class="p">,</span> <span class="n">port_sharpe</span><span class="p">))</span>
+    <span class="n">weights_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+
+<span class="n">results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;return&quot;</span><span class="p">,</span> <span class="s2">&quot;volatility&quot;</span><span class="p">,</span> <span class="s2">&quot;sharpe&quot;</span><span class="p">])</span>
+<span class="n">results_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>return</th>
+      <th>volatility</th>
+      <th>sharpe</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.329747</td>
+      <td>0.083315</td>
+      <td>3.717775</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.331285</td>
+      <td>0.083463</td>
+      <td>3.729634</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.234059</td>
+      <td>0.087621</td>
+      <td>2.443009</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.290020</td>
+      <td>0.082179</td>
+      <td>3.285760</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.355296</td>
+      <td>0.083262</td>
+      <td>4.027014</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="frontera-eficiente-aproximacion-visual">
+<h2>13) Frontera eficiente (aproximación visual)<a class="headerlink" href="#frontera-eficiente-aproximacion-visual" title="Link to this heading">#</a></h2>
+<p>La frontera eficiente representa combinaciones de portafolios que ofrecen:</p>
+<ul class="simple">
+<li><p>el mayor retorno posible para un nivel de riesgo dado,</p></li>
+<li><p>o el menor riesgo posible para un nivel de retorno dado.</p></li>
+</ul>
+<p>En esta versión usamos simulación Monte Carlo para obtener una aproximación visual.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">max_sharpe_idx</span> <span class="o">=</span> <span class="n">results_df</span><span class="p">[</span><span class="s2">&quot;sharpe&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()</span>
+<span class="n">min_vol_idx</span> <span class="o">=</span> <span class="n">results_df</span><span class="p">[</span><span class="s2">&quot;volatility&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()</span>
+
+<span class="n">max_sharpe_port</span> <span class="o">=</span> <span class="n">results_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">max_sharpe_idx</span><span class="p">]</span>
+<span class="n">min_vol_port</span> <span class="o">=</span> <span class="n">results_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">min_vol_idx</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">results_df</span><span class="p">[</span><span class="s2">&quot;volatility&quot;</span><span class="p">],</span>
+    <span class="n">results_df</span><span class="p">[</span><span class="s2">&quot;return&quot;</span><span class="p">],</span>
+    <span class="n">c</span><span class="o">=</span><span class="n">results_df</span><span class="p">[</span><span class="s2">&quot;sharpe&quot;</span><span class="p">],</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">scatter</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Sharpe Ratio&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">max_sharpe_port</span><span class="p">[</span><span class="s2">&quot;volatility&quot;</span><span class="p">],</span>
+    <span class="n">max_sharpe_port</span><span class="p">[</span><span class="s2">&quot;return&quot;</span><span class="p">],</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Max Sharpe&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">min_vol_port</span><span class="p">[</span><span class="s2">&quot;volatility&quot;</span><span class="p">],</span>
+    <span class="n">min_vol_port</span><span class="p">[</span><span class="s2">&quot;return&quot;</span><span class="p">],</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Min Volatility&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Volatility&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Expected Return&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Monte Carlo Portfolios: Risk vs Return&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/1c07fb2c9567a66d9f80190c8d1ac0c62ca45dc3478d9534a8bd5e0e0d175e69.png" src="../../_images/1c07fb2c9567a66d9f80190c8d1ac0c62ca45dc3478d9534a8bd5e0e0d175e69.png" />
+</div>
+</div>
+</section>
+<section id="que-portafolio-fue-mejor-segun-sharpe">
+<h2>14) ¿Qué portafolio fue mejor según Sharpe?<a class="headerlink" href="#que-portafolio-fue-mejor-segun-sharpe" title="Link to this heading">#</a></h2>
+<p>El portafolio con mayor Sharpe es, bajo esta métrica, el que mejor balancea
+retorno esperado y riesgo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_weights</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">weights_list</span><span class="p">[</span><span class="n">max_sharpe_idx</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">tickers</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)</span>
+<span class="n">best_weights</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TSLA    0.442817
+AMZN    0.299056
+MSFT    0.181364
+AAPL    0.057229
+NVDA    0.019534
+Name: weight, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="portafolio-de-minima-volatilidad">
+<h2>15) Portafolio de mínima volatilidad<a class="headerlink" href="#portafolio-de-minima-volatilidad" title="Link to this heading">#</a></h2>
+<p>A veces el objetivo no es maximizar retorno, sino construir un portafolio más defensivo.</p>
+<p>Ese sería el caso de un inversionista muy adverso al riesgo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_vol_weights</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">weights_list</span><span class="p">[</span><span class="n">min_vol_idx</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">tickers</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)</span>
+<span class="n">min_vol_weights</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TSLA    0.275884
+AMZN    0.229874
+MSFT    0.210069
+NVDA    0.143691
+AAPL    0.140482
+Name: weight, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparacion-rapida-entre-portafolios-relevantes">
+<h2>16) Comparación rápida entre portafolios relevantes<a class="headerlink" href="#comparacion-rapida-entre-portafolios-relevantes" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">summary_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;Equal Weight&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">portfolio_return_equal</span><span class="p">,</span> <span class="n">portfolio_vol_equal</span><span class="p">,</span> <span class="n">portfolio_sharpe_equal</span><span class="p">],</span>
+        <span class="s2">&quot;Max Sharpe&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="n">max_sharpe_port</span><span class="p">[</span><span class="s2">&quot;return&quot;</span><span class="p">],</span>
+            <span class="n">max_sharpe_port</span><span class="p">[</span><span class="s2">&quot;volatility&quot;</span><span class="p">],</span>
+            <span class="n">max_sharpe_port</span><span class="p">[</span><span class="s2">&quot;sharpe&quot;</span><span class="p">],</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;Min Volatility&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="n">min_vol_port</span><span class="p">[</span><span class="s2">&quot;return&quot;</span><span class="p">],</span>
+            <span class="n">min_vol_port</span><span class="p">[</span><span class="s2">&quot;volatility&quot;</span><span class="p">],</span>
+            <span class="n">min_vol_port</span><span class="p">[</span><span class="s2">&quot;sharpe&quot;</span><span class="p">],</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Expected Return&quot;</span><span class="p">,</span> <span class="s2">&quot;Volatility&quot;</span><span class="p">,</span> <span class="s2">&quot;Sharpe&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">summary_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Equal Weight</th>
+      <th>Max Sharpe</th>
+      <th>Min Volatility</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Expected Return</th>
+      <td>0.302718</td>
+      <td>0.430845</td>
+      <td>0.343260</td>
+    </tr>
+    <tr>
+      <th>Volatility</th>
+      <td>0.077149</td>
+      <td>0.082446</td>
+      <td>0.074434</td>
+    </tr>
+    <tr>
+      <th>Sharpe</th>
+      <td>3.664572</td>
+      <td>4.983223</td>
+      <td>4.342938</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="como-conecta-esto-con-smartportfolio">
+<h2>17) ¿Cómo conecta esto con SmartPortfolio?<a class="headerlink" href="#como-conecta-esto-con-smartportfolio" title="Link to this heading">#</a></h2>
+<p>Todo este notebook tiene una lectura arquitectónica:</p>
+<pre  class="mermaid">
+        flowchart LR
+    A[Provider / API] --&gt; B[Prices DataFrame]
+    B --&gt; C[Returns Engine]
+    C --&gt; D[Risk Metrics]
+    D --&gt; E[Indicators]
+    D --&gt; F[Portfolio Optimizer]
+    E --&gt; G[Alerts / Dashboards]
+    F --&gt; G
+    </pre><p>En SmartPortfolio estas piezas pueden vivir como:</p>
+<ul class="simple">
+<li><p>métodos de <code class="docutils literal notranslate"><span class="pre">Instrumento</span></code>,</p></li>
+<li><p>utilidades de analítica,</p></li>
+<li><p>una clase <code class="docutils literal notranslate"><span class="pre">OptimizadorPortafolio</span></code>,</p></li>
+<li><p>dashboards o reportes automáticos.</p></li>
+</ul>
+</section>
+<section id="ideas-clave-que-deben-quedar">
+<h2>18) Ideas clave que deben quedar<a class="headerlink" href="#ideas-clave-que-deben-quedar" title="Link to this heading">#</a></h2>
+<section id="sobre-retornos">
+<h3>Sobre retornos<a class="headerlink" href="#sobre-retornos" title="Link to this heading">#</a></h3>
+<p>Trabajamos con retornos porque son comparables y modelables.</p>
+</section>
+<section id="sobre-volatilidad">
+<h3>Sobre volatilidad<a class="headerlink" href="#sobre-volatilidad" title="Link to this heading">#</a></h3>
+<p>Riesgo no es solo “caer”; también es incertidumbre.</p>
+</section>
+<section id="sobre-bollinger">
+<h3>Sobre Bollinger<a class="headerlink" href="#sobre-bollinger" title="Link to this heading">#</a></h3>
+<p>Es una herramienta descriptiva útil para contextualizar precios.</p>
+</section>
+<section id="sobre-sharpe">
+<h3>Sobre Sharpe<a class="headerlink" href="#sobre-sharpe" title="Link to this heading">#</a></h3>
+<p>No basta con ganar más; importa cuánto riesgo asumiste.</p>
+</section>
+<section id="sobre-markowitz">
+<h3>Sobre Markowitz<a class="headerlink" href="#sobre-markowitz" title="Link to this heading">#</a></h3>
+<p>La decisión óptima no es escoger el “mejor activo”, sino la mejor combinación.</p>
+</section>
+</section>
+<section id="cierre">
+<h2>🎯 Cierre<a class="headerlink" href="#cierre" title="Link to this heading">#</a></h2>
+<p>Este notebook muestra el paso de:</p>
+<ul class="simple">
+<li><p>datos descargados,</p></li>
+<li><p>a métricas financieras,</p></li>
+<li><p>a decisiones de portafolio.</p></li>
+</ul>
+<p>Eso es exactamente lo que necesitas en un sistema como <strong>SmartPortfolio</strong>:
+no solo almacenar datos, sino convertirlos en inteligencia cuantitativa.</p>
+<p>En la siguiente sección esto puede desembocar naturalmente en:</p>
+<ul class="simple">
+<li><p>clases de optimización,</p></li>
+<li><p>reglas de alerta,</p></li>
+<li><p>recomendaciones automáticas,</p></li>
+<li><p>y un proyecto integrador mucho más sólido.</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./contenidos\sesion5"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_async_descarga_paralela.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">5.3 ⚡ Performance Real: Asincronismo y Descarga Paralela (Async)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05_smartportfolio_engine.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">5.5 🧩 Proyecto Integrador: SmartPortfolio Engine</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo">🎯 Objetivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapa-mental">🧭 Mapa mental</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-no-trabajamos-directamente-con-precios">1) ¿Por qué no trabajamos directamente con precios?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-del-retorno-simple">Fórmula del retorno simple</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-de-analisis">2) Pipeline de análisis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulacion-de-precios">3) Simulación de precios</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-precios">4) Visualización de precios</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retornos">5) Retornos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retorno-esperado">6) Retorno esperado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#volatilidad-una-medida-basica-de-riesgo">7) Volatilidad: una medida básica de riesgo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-es-util">¿Por qué es útil?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matriz-de-covarianza">8) Matriz de covarianza</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#idea-clave">Idea clave</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bandas-de-bollinger">9) Bandas de Bollinger</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-sirven">¿Por qué sirven?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sharpe-ratio">10) Sharpe Ratio</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">¿Por qué es útil?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#teoria-de-markowitz-combinar-activos-para-optimizar-riesgo-y-retorno">11) Teoría de Markowitz: combinar activos para optimizar riesgo y retorno</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#componentes">Componentes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulas">Fórmulas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#idea-central">Idea central</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulacion-monte-carlo-de-portafolios">12) Simulación Monte Carlo de portafolios</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frontera-eficiente-aproximacion-visual">13) Frontera eficiente (aproximación visual)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-portafolio-fue-mejor-segun-sharpe">14) ¿Qué portafolio fue mejor según Sharpe?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#portafolio-de-minima-volatilidad">15) Portafolio de mínima volatilidad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-rapida-entre-portafolios-relevantes">16) Comparación rápida entre portafolios relevantes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-conecta-esto-con-smartportfolio">17) ¿Cómo conecta esto con SmartPortfolio?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ideas-clave-que-deben-quedar">18) Ideas clave que deben quedar</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sobre-retornos">Sobre retornos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sobre-volatilidad">Sobre volatilidad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sobre-bollinger">Sobre Bollinger</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sobre-sharpe">Sobre Sharpe</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sobre-markowitz">Sobre Markowitz</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cierre">🎯 Cierre</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Maestría en Inteligencia de Negocios
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
+  <p>Universidad Externado de Colombia</p>
+</div>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

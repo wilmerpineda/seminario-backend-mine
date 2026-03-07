@@ -38,3 +38,9 @@ parts:
     - file: contenidos/sesion5/01_validacion_dominio_fuerte
     - file: contenidos/sesion5/02_configuracion_secrets
     - file: contenidos/sesion5/03_async_descarga_paralela
+    - file: contenidos/sesion5/04_analitica_financiera_extendida
+    - file: contenidos/sesion5/05_smartportfolio_engine
+  - caption: Sección 6 — FastAPI y Proyectos como servicios
+    chapters:
+    - file: contenidos/sesion6/01_introduccion_fastapi
+    - file: contenidos/sesion6/02_endpoints_pydantic_fastapi
